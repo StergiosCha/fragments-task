@@ -65,4 +65,4 @@ The second part of the No Data Task asks the same question of a real language wi
 
 ## Organisers and contact
 
-Stergios Chatzikyriakidis (University of Crete) · Aarne Talman (University of Helsinki) · [further organisers] · contact: eloquent-clef2027-organizers AT googlegroups.com
+Stergios Chatzikyriakidis (Institute for Language and Speech Processing, Athena Research Centre) · Aarne Talman (University of Helsinki) · [further organisers] · contact: eloquent-clef2027-organizers AT googlegroups.com
