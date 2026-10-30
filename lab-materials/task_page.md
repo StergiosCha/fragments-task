@@ -1,9 +1,11 @@
 ---
 layout: default
-title: No Data Task — Fragments
+title: Fragments — learning a language from its specification
 ---
 
-# No Data Task: can a language model learn a language from its specification alone?
+# Fragments: learning a language from its specification
+
+*Can a language model learn a language from its specification alone?*
 
 *Part of the [ELOQUENT lab](https://eloquent-lab.github.io/) at CLEF 2027. This page describes the synthetic-fragment part of the task; the field-grammar part is described [here](#field-grammar-part).*
 

@@ -1,7 +1,8 @@
-# Fragments: can a language model learn a language from its specification alone?
+# Fragments: learning a language from its specification
 
-Working repository for the synthetic-fragment half of the **No Data Task**, proposed for the
-ELOQUENT lab at CLEF 2027 (Bucharest, 14–17 September 2027).
+A shared task of the ELOQUENT lab, CLEF 2027. Task page: https://stergioscha.github.io/fragments-task/
+
+Working repository for the task (the synthetic-fragment half of the lab's No Data Task), CLEF 2027, Bucharest, 14–17 September 2027.
 
 The idea in one paragraph: each year we release a new *fragment* of a language in Montague's
 sense — a small grammar, a lexicon of invented words, compositional rules mapping sentences to
