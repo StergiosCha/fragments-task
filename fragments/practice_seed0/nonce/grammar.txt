@@ -1,0 +1,4 @@
+S -> NP VP
+NP -> Det N | PN | Det N RC
+RC -> that VP | that NP TV
+VP -> IV | TV NP | not VP

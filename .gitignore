@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+proposal/*.aux
+proposal/*.bbl
+proposal/*.blg
+proposal/*.log
+proposal/*.out
+proposal/*.fdb_latexmk
+proposal/*.fls

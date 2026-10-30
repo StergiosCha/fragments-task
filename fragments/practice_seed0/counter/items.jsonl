@@ -1,0 +1,52 @@
+{"id": 1, "type": "parse", "sentence": "wonbis mippos"}
+{"id": 2, "type": "parse", "sentence": "wonbis not tamwup dorom zukka"}
+{"id": 3, "type": "parse", "sentence": "mislup mippos"}
+{"id": 4, "type": "parse", "sentence": "wonbis wutbu mippos"}
+{"id": 5, "type": "parse", "sentence": "gesdam zispam mippos"}
+{"id": 6, "type": "parse", "sentence": "wonbis gigup wonbis zukka"}
+{"id": 7, "type": "parse", "sentence": "gesdam petfat dorom zusdit zukka"}
+{"id": 8, "type": "parse", "sentence": "zusdit zispam gesdam that gigup zusdit zukka dorom wonbis"}
+{"id": 9, "type": "parse", "sentence": "mislup not gigup gesdam zukka"}
+{"id": 10, "type": "parse", "sentence": "tamwup petfat gigup wonbis zispam"}
+{"id": 11, "type": "parse", "sentence": "tamwup zispam that wutbu wutbu"}
+{"id": 12, "type": "parse", "sentence": "mislup gigup mippos mislup"}
+{"id": 13, "type": "parse", "sentence": "gesdam zispam that mippos mippos"}
+{"id": 14, "type": "parse", "sentence": "wonbis mippos wutbu"}
+{"id": 15, "type": "parse", "sentence": "mislup wutbu"}
+{"id": 16, "type": "parse", "sentence": "mislup"}
+{"id": 17, "type": "parse", "sentence": "tamwup zispam gigup gesdam zukka"}
+{"id": 18, "type": "parse", "sentence": "gesdam that zukka gesdam petfat dorom gigup wonbis"}
+{"id": 19, "type": "parse", "sentence": "mislup not mippos"}
+{"id": 20, "type": "parse", "sentence": "tamwup petfat wutbu gesdam"}
+{"id": 21, "type": "interpret", "sentence": "zusdit zukka that mippos mippos"}
+{"id": 22, "type": "interpret", "sentence": "wonbis mippos"}
+{"id": 23, "type": "interpret", "sentence": "gesdam zispam mippos"}
+{"id": 24, "type": "interpret", "sentence": "zusdit petfat that dorom mislup mippos"}
+{"id": 25, "type": "interpret", "sentence": "wonbis not dorom tamwup petfat"}
+{"id": 26, "type": "interpret", "sentence": "zusdit zukka that dorom gesdam petfat mippos"}
+{"id": 27, "type": "interpret", "sentence": "zusdit petfat that dorom gesdam zukka wutbu"}
+{"id": 28, "type": "interpret", "sentence": "wonbis wutbu"}
+{"id": 29, "type": "interpret", "sentence": "mislup mippos"}
+{"id": 30, "type": "interpret", "sentence": "wonbis not wutbu"}
+{"id": 31, "type": "interpret", "sentence": "tamwup zukka mippos"}
+{"id": 32, "type": "interpret", "sentence": "wonbis wutbu"}
+{"id": 33, "type": "interpret", "sentence": "wonbis not mippos"}
+{"id": 34, "type": "interpret", "sentence": "zusdit petfat gigup tamwup zispam"}
+{"id": 35, "type": "interpret", "sentence": "gesdam zukka that wonbis dorom gigup zusdit zukka"}
+{"id": 36, "type": "interpret", "sentence": "tamwup zispam not dorom tamwup petfat"}
+{"id": 37, "type": "interpret", "sentence": "zusdit petfat that dorom wonbis not wutbu"}
+{"id": 38, "type": "interpret", "sentence": "gesdam zukka mippos"}
+{"id": 39, "type": "interpret", "sentence": "tamwup zispam mippos"}
+{"id": 40, "type": "interpret", "sentence": "gesdam petfat that mippos wutbu"}
+{"id": 41, "type": "infer", "premises": ["mislup gigup gesdam zukka", "mislup mippos"], "conclusion": "mislup gigup gesdam zukka"}
+{"id": 42, "type": "infer", "premises": ["tamwup zukka not wutbu"], "conclusion": "gesdam zukka not wutbu"}
+{"id": 43, "type": "infer", "premises": ["mislup not mippos"], "conclusion": "mislup not mippos"}
+{"id": 44, "type": "infer", "premises": ["gesdam zukka that gigup zusdit petfat wutbu"], "conclusion": "gesdam zukka wutbu"}
+{"id": 45, "type": "infer", "premises": ["gesdam petfat that wutbu not gigup gesdam petfat"], "conclusion": "zusdit petfat that wutbu not gigup gesdam petfat"}
+{"id": 46, "type": "infer", "premises": ["gesdam zispam gigup wonbis"], "conclusion": "wonbis gigup wonbis"}
+{"id": 47, "type": "infer", "premises": ["mislup not wutbu", "wonbis wutbu"], "conclusion": "mislup wutbu"}
+{"id": 48, "type": "infer", "premises": ["wonbis not mippos", "tamwup zukka mippos"], "conclusion": "wonbis not mippos"}
+{"id": 49, "type": "infer", "premises": ["tamwup zukka gigup zusdit zispam"], "conclusion": "wonbis not mippos"}
+{"id": 50, "type": "infer", "premises": ["gesdam zukka that mislup dorom mippos"], "conclusion": "zusdit zukka that mislup dorom mippos"}
+{"id": 51, "type": "infer", "premises": ["mislup dorom gesdam zukka"], "conclusion": "mislup not dorom gesdam zukka"}
+{"id": 52, "type": "infer", "premises": ["wonbis not gigup zusdit petfat", "zusdit petfat that mippos gigup zusdit zispam"], "conclusion": "wonbis gigup zusdit petfat"}

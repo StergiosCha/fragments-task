@@ -1,0 +1,102 @@
+{
+ "H1": {
+  "D": [
+   "a",
+   "b"
+  ],
+  "fukas": "a",
+  "vossop": "a",
+  "dozon": [
+   "b"
+  ],
+  "raske": [
+   "b"
+  ],
+  "ziba": [
+   "a",
+   "b"
+  ],
+  "zopmap": [
+   "a"
+  ],
+  "vospem": [
+   "a"
+  ],
+  "geskan": [
+   [
+    "a",
+    "b"
+   ],
+   [
+    "b",
+    "a"
+   ],
+   [
+    "b",
+    "b"
+   ]
+  ],
+  "wufi": []
+ },
+ "H2": {
+  "D": [
+   "a",
+   "b"
+  ],
+  "fukas": "b",
+  "vossop": "b",
+  "dozon": [
+   "a"
+  ],
+  "raske": [
+   "a",
+   "b"
+  ],
+  "ziba": [
+   "a"
+  ],
+  "zopmap": [
+   "a"
+  ],
+  "vospem": [
+   "b"
+  ],
+  "geskan": [
+   [
+    "a",
+    "a"
+   ]
+  ],
+  "wufi": []
+ },
+ "H3": {
+  "D": [
+   "a",
+   "b"
+  ],
+  "fukas": "a",
+  "vossop": "b",
+  "dozon": [
+   "b"
+  ],
+  "raske": [
+   "b"
+  ],
+  "ziba": [
+   "a"
+  ],
+  "zopmap": [
+   "a"
+  ],
+  "vospem": [
+   "b"
+  ],
+  "geskan": [],
+  "wufi": [
+   [
+    "a",
+    "a"
+   ]
+  ]
+ }
+}

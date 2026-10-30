@@ -1,0 +1,100 @@
+{
+ "H1": {
+  "D": [
+   "a",
+   "b"
+  ],
+  "wonbis": "a",
+  "mislup": "a",
+  "petfat": [
+   "b"
+  ],
+  "zukka": [
+   "a"
+  ],
+  "zispam": [
+   "a"
+  ],
+  "mippos": [
+   "a",
+   "b"
+  ],
+  "wutbu": [],
+  "dorom": [
+   [
+    "b",
+    "b"
+   ]
+  ],
+  "gigup": [
+   [
+    "b",
+    "b"
+   ]
+  ]
+ },
+ "H2": {
+  "D": [
+   "a",
+   "b"
+  ],
+  "wonbis": "b",
+  "mislup": "a",
+  "petfat": [
+   "b"
+  ],
+  "zukka": [
+   "b"
+  ],
+  "zispam": [],
+  "mippos": [
+   "a"
+  ],
+  "wutbu": [
+   "a"
+  ],
+  "dorom": [],
+  "gigup": [
+   [
+    "a",
+    "a"
+   ],
+   [
+    "a",
+    "b"
+   ],
+   [
+    "b",
+    "a"
+   ]
+  ]
+ },
+ "H3": {
+  "D": [
+   "a",
+   "b"
+  ],
+  "wonbis": "a",
+  "mislup": "b",
+  "petfat": [
+   "b"
+  ],
+  "zukka": [
+   "a"
+  ],
+  "zispam": [],
+  "mippos": [
+   "b"
+  ],
+  "wutbu": [
+   "a"
+  ],
+  "dorom": [],
+  "gigup": [
+   [
+    "a",
+    "b"
+   ]
+  ]
+ }
+}

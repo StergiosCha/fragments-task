@@ -1,0 +1,5 @@
+PN: Tam, Ren
+N: farmer, donkey, cat
+IV: walks, sleeps
+TV: sees, likes
+Det: every, some, no

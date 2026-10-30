@@ -1,0 +1,110 @@
+{"id": 1, "type": "parse", "sentence": "vossop wufi vossop"}
+{"id": 2, "type": "parse", "sentence": "not geskan fukas"}
+{"id": 3, "type": "parse", "sentence": "tinpet dozon not zopmap"}
+{"id": 4, "type": "parse", "sentence": "vossop not kuswun ziba"}
+{"id": 5, "type": "parse", "sentence": "fukas zopmap"}
+{"id": 6, "type": "parse", "sentence": "ziba kuswun ziba vospem"}
+{"id": 7, "type": "parse", "sentence": "tinpet dozon that vossop wufi geskan vossop"}
+{"id": 8, "type": "parse", "sentence": "rasgon raske rasgon wufi ziba"}
+{"id": 9, "type": "parse", "sentence": "kuswun ziba zopmap"}
+{"id": 10, "type": "parse", "sentence": "tinpet ziba fukas geskan"}
+{"id": 11, "type": "parse", "sentence": "fukas zopmap"}
+{"id": 12, "type": "parse", "sentence": "vossop geskan rasgon fukas raske"}
+{"id": 13, "type": "parse", "sentence": "rasgon ziba not wufi fukas"}
+{"id": 14, "type": "parse", "sentence": "not vossop geskan kuswun ziba"}
+{"id": 15, "type": "parse", "sentence": "fukas geskan kuswun ziba"}
+{"id": 16, "type": "parse", "sentence": "fukas not wufi zopmap vossop"}
+{"id": 17, "type": "parse", "sentence": "tinpet raske geskan tinpet raske"}
+{"id": 18, "type": "parse", "sentence": "rasgon zopmap ziba"}
+{"id": 19, "type": "parse", "sentence": "tinpet dozon that vossop wufi wufi kuswun dozon"}
+{"id": 20, "type": "parse", "sentence": "not vospem"}
+{"id": 21, "type": "parse", "sentence": "fukas vospem"}
+{"id": 22, "type": "parse", "sentence": "rasgon dozon that kuswun raske geskan wufi ziba rasgon"}
+{"id": 23, "type": "parse", "sentence": "rasgon ziba geskan vossop"}
+{"id": 24, "type": "parse", "sentence": "vossop zopmap zopmap"}
+{"id": 25, "type": "parse", "sentence": "fukas geskan tinpet dozon"}
+{"id": 26, "type": "parse", "sentence": "rasgon fukas zopmap"}
+{"id": 27, "type": "parse", "sentence": "fukas not zopmap"}
+{"id": 28, "type": "parse", "sentence": "kuswun that dozon zopmap zopmap"}
+{"id": 29, "type": "parse", "sentence": "rasgon raske that vospem vospem"}
+{"id": 30, "type": "parse", "sentence": "zopmap fukas"}
+{"id": 31, "type": "parse", "sentence": "fukas not vospem"}
+{"id": 32, "type": "parse", "sentence": "fukas"}
+{"id": 33, "type": "parse", "sentence": "kuswun dozon not zopmap"}
+{"id": 34, "type": "parse", "sentence": "rasgon dozon not zopmap wufi"}
+{"id": 35, "type": "parse", "sentence": "rasgon raske that vospem not geskan rasgon ziba"}
+{"id": 36, "type": "parse", "sentence": "rasgon ziba rasgon geskan raske"}
+{"id": 37, "type": "parse", "sentence": "tinpet ziba that vospem vospem"}
+{"id": 38, "type": "parse", "sentence": "rasgon not vospem"}
+{"id": 39, "type": "parse", "sentence": "rasgon dozon geskan rasgon ziba"}
+{"id": 40, "type": "parse", "sentence": "geskan kuswun ziba that geskan fukas not vospem"}
+{"id": 41, "type": "interpret", "sentence": "kuswun ziba that geskan fukas not vospem"}
+{"id": 42, "type": "interpret", "sentence": "rasgon ziba not vospem"}
+{"id": 43, "type": "interpret", "sentence": "vossop vospem"}
+{"id": 44, "type": "interpret", "sentence": "rasgon dozon not vospem"}
+{"id": 45, "type": "interpret", "sentence": "rasgon ziba not vospem"}
+{"id": 46, "type": "interpret", "sentence": "fukas wufi vossop"}
+{"id": 47, "type": "interpret", "sentence": "tinpet dozon not wufi rasgon dozon"}
+{"id": 48, "type": "interpret", "sentence": "fukas vospem"}
+{"id": 49, "type": "interpret", "sentence": "fukas not geskan tinpet ziba"}
+{"id": 50, "type": "interpret", "sentence": "rasgon dozon zopmap"}
+{"id": 51, "type": "interpret", "sentence": "tinpet ziba that vossop geskan geskan rasgon dozon"}
+{"id": 52, "type": "interpret", "sentence": "vossop not zopmap"}
+{"id": 53, "type": "interpret", "sentence": "tinpet dozon vospem"}
+{"id": 54, "type": "interpret", "sentence": "tinpet dozon that vospem geskan kuswun dozon"}
+{"id": 55, "type": "interpret", "sentence": "rasgon dozon that wufi vossop not geskan kuswun ziba"}
+{"id": 56, "type": "interpret", "sentence": "kuswun raske wufi fukas"}
+{"id": 57, "type": "interpret", "sentence": "fukas not zopmap"}
+{"id": 58, "type": "interpret", "sentence": "tinpet ziba that fukas wufi geskan fukas"}
+{"id": 59, "type": "interpret", "sentence": "vossop geskan vossop"}
+{"id": 60, "type": "interpret", "sentence": "vossop not geskan rasgon raske"}
+{"id": 61, "type": "interpret", "sentence": "vossop not geskan fukas"}
+{"id": 62, "type": "interpret", "sentence": "kuswun dozon that geskan tinpet ziba wufi vossop"}
+{"id": 63, "type": "interpret", "sentence": "fukas not wufi rasgon raske"}
+{"id": 64, "type": "interpret", "sentence": "tinpet ziba that kuswun raske wufi geskan vossop"}
+{"id": 65, "type": "interpret", "sentence": "rasgon ziba that rasgon dozon geskan geskan rasgon ziba"}
+{"id": 66, "type": "interpret", "sentence": "fukas not wufi rasgon dozon"}
+{"id": 67, "type": "interpret", "sentence": "vossop zopmap"}
+{"id": 68, "type": "interpret", "sentence": "tinpet raske vospem"}
+{"id": 69, "type": "interpret", "sentence": "vossop wufi rasgon raske"}
+{"id": 70, "type": "interpret", "sentence": "kuswun dozon zopmap"}
+{"id": 71, "type": "interpret", "sentence": "tinpet dozon not wufi vossop"}
+{"id": 72, "type": "interpret", "sentence": "rasgon raske that fukas geskan vospem"}
+{"id": 73, "type": "interpret", "sentence": "fukas not vospem"}
+{"id": 74, "type": "interpret", "sentence": "kuswun ziba that geskan fukas not wufi fukas"}
+{"id": 75, "type": "interpret", "sentence": "tinpet dozon that kuswun raske geskan zopmap"}
+{"id": 76, "type": "interpret", "sentence": "rasgon dozon wufi tinpet raske"}
+{"id": 77, "type": "interpret", "sentence": "rasgon raske geskan kuswun raske"}
+{"id": 78, "type": "interpret", "sentence": "vossop vospem"}
+{"id": 79, "type": "interpret", "sentence": "kuswun ziba geskan vossop"}
+{"id": 80, "type": "interpret", "sentence": "vossop zopmap"}
+{"id": 81, "type": "infer", "premises": ["kuswun raske wufi kuswun raske", "rasgon dozon geskan kuswun ziba"], "conclusion": "kuswun raske wufi kuswun raske"}
+{"id": 82, "type": "infer", "premises": ["tinpet raske that vossop geskan geskan kuswun dozon"], "conclusion": "tinpet raske geskan kuswun dozon"}
+{"id": 83, "type": "infer", "premises": ["kuswun ziba wufi tinpet dozon"], "conclusion": "kuswun ziba not wufi tinpet dozon"}
+{"id": 84, "type": "infer", "premises": ["vossop not geskan fukas"], "conclusion": "vossop not geskan fukas"}
+{"id": 85, "type": "infer", "premises": ["vossop geskan vossop"], "conclusion": "rasgon raske geskan tinpet dozon"}
+{"id": 86, "type": "infer", "premises": ["kuswun raske that geskan fukas zopmap", "vossop zopmap"], "conclusion": "kuswun raske that geskan fukas not zopmap"}
+{"id": 87, "type": "infer", "premises": ["fukas vospem", "fukas not wufi tinpet dozon"], "conclusion": "fukas vospem"}
+{"id": 88, "type": "infer", "premises": ["vossop vospem"], "conclusion": "kuswun ziba vospem"}
+{"id": 89, "type": "infer", "premises": ["rasgon dozon that zopmap vospem", "fukas geskan rasgon ziba"], "conclusion": "fukas zopmap"}
+{"id": 90, "type": "infer", "premises": ["tinpet raske that tinpet ziba wufi not wufi vossop"], "conclusion": "tinpet raske not wufi vossop"}
+{"id": 91, "type": "infer", "premises": ["tinpet raske not geskan fukas"], "conclusion": "tinpet raske not geskan fukas"}
+{"id": 92, "type": "infer", "premises": ["tinpet raske not zopmap"], "conclusion": "vossop not zopmap"}
+{"id": 93, "type": "infer", "premises": ["kuswun ziba that geskan rasgon raske not wufi fukas", "tinpet ziba that zopmap vospem"], "conclusion": "kuswun ziba that geskan rasgon raske wufi fukas"}
+{"id": 94, "type": "infer", "premises": ["kuswun raske that wufi fukas vospem", "kuswun raske that zopmap zopmap"], "conclusion": "vossop vospem"}
+{"id": 95, "type": "infer", "premises": ["tinpet dozon not geskan rasgon raske"], "conclusion": "vossop wufi vossop"}
+{"id": 96, "type": "infer", "premises": ["vossop wufi rasgon raske"], "conclusion": "vossop not wufi rasgon raske"}
+{"id": 97, "type": "infer", "premises": ["rasgon dozon geskan fukas"], "conclusion": "rasgon dozon geskan fukas"}
+{"id": 98, "type": "infer", "premises": ["vossop wufi vossop"], "conclusion": "vossop wufi vossop"}
+{"id": 99, "type": "infer", "premises": ["rasgon ziba that zopmap zopmap"], "conclusion": "rasgon ziba that zopmap zopmap"}
+{"id": 100, "type": "infer", "premises": ["rasgon raske that vospem wufi vossop"], "conclusion": "rasgon raske that vospem wufi vossop"}
+{"id": 101, "type": "infer", "premises": ["tinpet raske not wufi fukas", "kuswun raske zopmap"], "conclusion": "kuswun raske not wufi fukas"}
+{"id": 102, "type": "infer", "premises": ["fukas zopmap", "vossop wufi tinpet ziba"], "conclusion": "fukas zopmap"}
+{"id": 103, "type": "infer", "premises": ["fukas wufi vossop", "tinpet ziba not geskan vossop"], "conclusion": "fukas not wufi vossop"}
+{"id": 104, "type": "infer", "premises": ["fukas zopmap", "kuswun dozon that fukas geskan vospem"], "conclusion": "fukas not zopmap"}
+{"id": 105, "type": "infer", "premises": ["rasgon dozon that vossop geskan not wufi tinpet ziba"], "conclusion": "kuswun dozon that vossop geskan not wufi tinpet ziba"}
+{"id": 106, "type": "infer", "premises": ["kuswun ziba wufi kuswun raske"], "conclusion": "rasgon ziba wufi kuswun raske"}
+{"id": 107, "type": "infer", "premises": ["vossop not wufi vossop"], "conclusion": "vossop wufi vossop"}
+{"id": 108, "type": "infer", "premises": ["fukas wufi tinpet dozon", "fukas vospem"], "conclusion": "fukas not wufi tinpet dozon"}
+{"id": 109, "type": "infer", "premises": ["vossop zopmap"], "conclusion": "vossop not zopmap"}
+{"id": 110, "type": "infer", "premises": ["vossop wufi fukas"], "conclusion": "vossop not wufi fukas"}

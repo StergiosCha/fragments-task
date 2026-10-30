@@ -1,0 +1,110 @@
+{"id": 1, "type": "parse", "sentence": "some donkey that Tam likes not walks"}
+{"id": 2, "type": "parse", "sentence": "Tam sees some donkey Ren"}
+{"id": 3, "type": "parse", "sentence": "Tam sees some donkey"}
+{"id": 4, "type": "parse", "sentence": "every that cat Ren sees sees Ren"}
+{"id": 5, "type": "parse", "sentence": "Ren not likes every donkey"}
+{"id": 6, "type": "parse", "sentence": "walks"}
+{"id": 7, "type": "parse", "sentence": "some farmer that Ren sees likes Ren"}
+{"id": 8, "type": "parse", "sentence": "Ren cat likes some cat"}
+{"id": 9, "type": "parse", "sentence": "Tam likes Tam"}
+{"id": 10, "type": "parse", "sentence": "no donkey every that donkey sees not likes Ren"}
+{"id": 11, "type": "parse", "sentence": "Tam not sees every donkey"}
+{"id": 12, "type": "parse", "sentence": "every cat that Ren sees sleeps likes"}
+{"id": 13, "type": "parse", "sentence": "Ren sees every farmer"}
+{"id": 14, "type": "parse", "sentence": "sleeps Tam"}
+{"id": 15, "type": "parse", "sentence": "every cat sleeps"}
+{"id": 16, "type": "parse", "sentence": "Ren walks Ren"}
+{"id": 17, "type": "parse", "sentence": "Ren sleeps"}
+{"id": 18, "type": "parse", "sentence": "no that farmer Ren likes sees Tam"}
+{"id": 19, "type": "parse", "sentence": "some cat sleeps"}
+{"id": 20, "type": "parse", "sentence": "sleeps"}
+{"id": 21, "type": "parse", "sentence": "some donkey sleeps"}
+{"id": 22, "type": "parse", "sentence": "no donkey that sees Tam likes some sleeps cat"}
+{"id": 23, "type": "parse", "sentence": "no farmer that sees no cat not sleeps"}
+{"id": 24, "type": "parse", "sentence": "farmer no walks"}
+{"id": 25, "type": "parse", "sentence": "every farmer sees no donkey"}
+{"id": 26, "type": "parse", "sentence": "cat every sees some cat"}
+{"id": 27, "type": "parse", "sentence": "no donkey that walks sees Ren"}
+{"id": 28, "type": "parse", "sentence": "no cat walks sleeps"}
+{"id": 29, "type": "parse", "sentence": "some donkey walks"}
+{"id": 30, "type": "parse", "sentence": "Ren sees not Ren"}
+{"id": 31, "type": "parse", "sentence": "some farmer that Ren sees walks"}
+{"id": 32, "type": "parse", "sentence": "every that farmer no cat likes walks"}
+{"id": 33, "type": "parse", "sentence": "every cat that walks walks"}
+{"id": 34, "type": "parse", "sentence": "donkey no that sleeps walks"}
+{"id": 35, "type": "parse", "sentence": "no donkey not walks"}
+{"id": 36, "type": "parse", "sentence": "some donkey that likes some sees Tam"}
+{"id": 37, "type": "parse", "sentence": "every farmer walks"}
+{"id": 38, "type": "parse", "sentence": "not sleeps"}
+{"id": 39, "type": "parse", "sentence": "no farmer not sees Tam"}
+{"id": 40, "type": "parse", "sentence": "some sleeps"}
+{"id": 41, "type": "interpret", "sentence": "some donkey sleeps"}
+{"id": 42, "type": "interpret", "sentence": "every donkey not sleeps"}
+{"id": 43, "type": "interpret", "sentence": "every farmer not sees some cat"}
+{"id": 44, "type": "interpret", "sentence": "some cat that some cat likes not likes some cat"}
+{"id": 45, "type": "interpret", "sentence": "no farmer sleeps"}
+{"id": 46, "type": "interpret", "sentence": "Tam likes some cat"}
+{"id": 47, "type": "interpret", "sentence": "Tam walks"}
+{"id": 48, "type": "interpret", "sentence": "no cat not walks"}
+{"id": 49, "type": "interpret", "sentence": "some farmer that no cat likes likes no donkey"}
+{"id": 50, "type": "interpret", "sentence": "no farmer likes Tam"}
+{"id": 51, "type": "interpret", "sentence": "some cat walks"}
+{"id": 52, "type": "interpret", "sentence": "no farmer not walks"}
+{"id": 53, "type": "interpret", "sentence": "Tam likes some donkey"}
+{"id": 54, "type": "interpret", "sentence": "every donkey that Ren likes not walks"}
+{"id": 55, "type": "interpret", "sentence": "some cat that sees every donkey walks"}
+{"id": 56, "type": "interpret", "sentence": "Tam not likes Ren"}
+{"id": 57, "type": "interpret", "sentence": "every farmer sleeps"}
+{"id": 58, "type": "interpret", "sentence": "no farmer likes some donkey"}
+{"id": 59, "type": "interpret", "sentence": "every cat walks"}
+{"id": 60, "type": "interpret", "sentence": "no farmer likes Ren"}
+{"id": 61, "type": "interpret", "sentence": "Ren not likes every cat"}
+{"id": 62, "type": "interpret", "sentence": "some cat that sees Tam sees every cat"}
+{"id": 63, "type": "interpret", "sentence": "Ren sees Ren"}
+{"id": 64, "type": "interpret", "sentence": "Tam walks"}
+{"id": 65, "type": "interpret", "sentence": "some donkey that sleeps not walks"}
+{"id": 66, "type": "interpret", "sentence": "no farmer that sleeps not likes Tam"}
+{"id": 67, "type": "interpret", "sentence": "no cat walks"}
+{"id": 68, "type": "interpret", "sentence": "Tam not likes every donkey"}
+{"id": 69, "type": "interpret", "sentence": "Tam sees Tam"}
+{"id": 70, "type": "interpret", "sentence": "Ren not likes Tam"}
+{"id": 71, "type": "interpret", "sentence": "no donkey not sleeps"}
+{"id": 72, "type": "interpret", "sentence": "every donkey that sleeps sleeps"}
+{"id": 73, "type": "interpret", "sentence": "no donkey that no farmer likes likes Tam"}
+{"id": 74, "type": "interpret", "sentence": "every donkey not likes some cat"}
+{"id": 75, "type": "interpret", "sentence": "no donkey walks"}
+{"id": 76, "type": "interpret", "sentence": "some donkey that every donkey likes not sees Ren"}
+{"id": 77, "type": "interpret", "sentence": "Ren sleeps"}
+{"id": 78, "type": "interpret", "sentence": "every donkey that Tam sees walks"}
+{"id": 79, "type": "interpret", "sentence": "some cat walks"}
+{"id": 80, "type": "interpret", "sentence": "no farmer that likes no donkey not likes Tam"}
+{"id": 81, "type": "infer", "premises": ["no farmer not sleeps", "no donkey that likes no donkey sleeps"], "conclusion": "some farmer not sleeps"}
+{"id": 82, "type": "infer", "premises": ["every cat not likes no farmer", "no farmer that walks walks"], "conclusion": "every cat not likes no farmer"}
+{"id": 83, "type": "infer", "premises": ["no donkey sees every farmer"], "conclusion": "Tam walks"}
+{"id": 84, "type": "infer", "premises": ["no farmer that Ren likes sleeps", "Ren walks"], "conclusion": "no farmer sleeps"}
+{"id": 85, "type": "infer", "premises": ["no farmer that every donkey sees walks", "Ren likes Tam"], "conclusion": "no farmer that every donkey sees not walks"}
+{"id": 86, "type": "infer", "premises": ["some cat likes every donkey"], "conclusion": "some cat likes every donkey"}
+{"id": 87, "type": "infer", "premises": ["some cat that walks walks"], "conclusion": "some cat that walks not walks"}
+{"id": 88, "type": "infer", "premises": ["some farmer that no farmer sees not sleeps"], "conclusion": "some farmer that no farmer sees sleeps"}
+{"id": 89, "type": "infer", "premises": ["some cat not walks"], "conclusion": "Tam not walks"}
+{"id": 90, "type": "infer", "premises": ["no cat sleeps"], "conclusion": "no cat not sleeps"}
+{"id": 91, "type": "infer", "premises": ["some cat that sees some farmer not likes no donkey"], "conclusion": "Ren not likes no donkey"}
+{"id": 92, "type": "infer", "premises": ["every donkey sleeps", "no farmer that every farmer likes sees Tam"], "conclusion": "Tam sleeps"}
+{"id": 93, "type": "infer", "premises": ["every donkey that no cat sees sleeps"], "conclusion": "no donkey that no cat sees sleeps"}
+{"id": 94, "type": "infer", "premises": ["every cat sleeps", "Ren walks"], "conclusion": "every cat sleeps"}
+{"id": 95, "type": "infer", "premises": ["every farmer that Tam sees sleeps", "no cat that Tam sees not walks"], "conclusion": "no farmer that Tam sees sleeps"}
+{"id": 96, "type": "infer", "premises": ["Ren sees Tam", "some farmer that Ren sees not walks"], "conclusion": "Ren not sees Tam"}
+{"id": 97, "type": "infer", "premises": ["Tam sees every cat"], "conclusion": "Tam not sees every cat"}
+{"id": 98, "type": "infer", "premises": ["Ren not walks"], "conclusion": "Ren not walks"}
+{"id": 99, "type": "infer", "premises": ["Ren walks", "every donkey walks"], "conclusion": "Ren walks"}
+{"id": 100, "type": "infer", "premises": ["Ren likes Tam"], "conclusion": "Ren likes Tam"}
+{"id": 101, "type": "infer", "premises": ["some farmer walks", "no farmer that every donkey sees likes every cat"], "conclusion": "some farmer walks"}
+{"id": 102, "type": "infer", "premises": ["some donkey sleeps"], "conclusion": "some donkey sleeps"}
+{"id": 103, "type": "infer", "premises": ["Ren not sleeps", "no donkey that Tam likes walks"], "conclusion": "Ren not sleeps"}
+{"id": 104, "type": "infer", "premises": ["some cat that likes Tam likes no donkey"], "conclusion": "some cat likes no donkey"}
+{"id": 105, "type": "infer", "premises": ["some farmer that no donkey likes not likes some farmer"], "conclusion": "no farmer that no donkey likes not likes some farmer"}
+{"id": 106, "type": "infer", "premises": ["every donkey not walks", "some donkey likes Tam"], "conclusion": "every donkey walks"}
+{"id": 107, "type": "infer", "premises": ["Tam likes Tam"], "conclusion": "Tam not likes Tam"}
+{"id": 108, "type": "infer", "premises": ["some donkey not sleeps"], "conclusion": "no donkey not sleeps"}
+{"id": 109, "type": "infer", "premises": ["Ren not walks", "no donkey sees Ren"], "conclusion": "Ren walks"}
+{"id": 110, "type": "infer", "premises": ["Ren walks"], "conclusion": "Ren not walks"}

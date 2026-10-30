@@ -1,0 +1,68 @@
+{
+ "M1": {
+  "D": [
+   "a",
+   "b"
+  ],
+  "fukas": "b",
+  "vossop": "b",
+  "dozon": [
+   "a"
+  ],
+  "raske": [],
+  "ziba": [
+   "a"
+  ],
+  "zopmap": [
+   "a",
+   "b"
+  ],
+  "vospem": [],
+  "geskan": [
+   [
+    "b",
+    "b"
+   ]
+  ],
+  "wufi": [
+   [
+    "b",
+    "a"
+   ]
+  ]
+ },
+ "M2": {
+  "D": [
+   "a",
+   "b"
+  ],
+  "fukas": "b",
+  "vossop": "a",
+  "dozon": [
+   "a",
+   "b"
+  ],
+  "raske": [
+   "a",
+   "b"
+  ],
+  "ziba": [
+   "b"
+  ],
+  "zopmap": [],
+  "vospem": [
+   "a"
+  ],
+  "geskan": [
+   [
+    "a",
+    "b"
+   ],
+   [
+    "b",
+    "a"
+   ]
+  ],
+  "wufi": []
+ }
+}
