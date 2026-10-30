@@ -1,0 +1,232 @@
+<title>Fragments</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a typeset specification, the way a Montague fragment is printed — one measure, numbered rules, the formal objects set in mono and the prose around them in a serif with real italics. */
+:root {
+  --bg: #f7f5ef; --paper: #fdfcf9; --ink: #1c1a16; --ink-2: #4a463f; --mute: #8a8378;
+  --rule: #d9d3c6; --accent: #1d5f8a; --accent-ink: #ffffff; --counter: #a3401f; --ok: #2d7a46;
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15161a; --paper: #1d1f24; --ink: #ecebe4; --ink-2: #b8b4aa; --mute: #7d7971;
+  --rule: #33363d; --accent: #6fb0dd; --accent-ink: #0f1a22; --counter: #e2825e; --ok: #6fc48a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #15161a; --paper: #1d1f24; --ink: #ecebe4; --ink-2: #b8b4aa; --mute: #7d7971;
+  --rule: #33363d; --accent: #6fb0dd; --accent-ink: #0f1a22; --counter: #e2825e; --ok: #6fc48a; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55 }
+.wrap { max-width: 980px; margin: 0 auto; padding-block: 0 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+a { color: var(--accent) }
+h1, h2, h3 { font-family: var(--display); font-weight: 500; line-height: 1.1; text-wrap: balance; margin: 0 }
+h2 { font-size: 1.9rem; margin-top: 64px; margin-bottom: 14px; letter-spacing: -0.01em }
+h3 { font-size: 1.2rem; margin-top: 28px; margin-bottom: 8px }
+p { max-width: 68ch; margin: 0 0 14px }
+.lede { font-family: var(--display); font-size: 1.25rem; font-weight: 300; color: var(--ink-2); max-width: 60ch }
+.eyebrow { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); margin: 0 0 10px }
+code, pre, .mono { font-family: var(--mono); font-size: .88em }
+pre { background: var(--paper); border: 1px solid var(--rule); padding: 14px 16px; overflow-x: auto; margin: 0; line-height: 1.5; min-width: 0 }
+table { border-collapse: collapse; width: 100%; font-size: .93rem; min-width: 0 }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--rule); vertical-align: top }
+th { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); font-weight: 600 }
+.tablewrap { overflow-x: auto }
+
+/* masthead */
+header { padding-top: 56px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: end }
+header h1 { font-size: clamp(2.6rem, 6vw, 4.4rem); font-weight: 300; letter-spacing: -0.02em }
+header h1 em { font-style: italic; font-weight: 500 }
+.badge { display: inline-block; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid var(--rule); border-radius: 999px; padding: 3px 10px; color: var(--ink-2); margin-right: 6px }
+.spec { background: var(--paper); border: 1px solid var(--rule); padding: 18px 20px; font-family: var(--mono); font-size: .82rem; line-height: 1.6; min-width: 0; overflow-x: auto }
+.spec .k { color: var(--mute) }
+.spec .f { color: var(--accent); font-weight: 600 }
+.spec .r { display: block; white-space: pre }
+
+/* worked example */
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 18px }
+.step { background: var(--paper); border: 1px solid var(--rule); padding: 16px 18px; min-width: 0 }
+.step .eyebrow { margin-bottom: 6px }
+.step pre { border: 0; padding: 8px 0 0; background: transparent; font-size: .82rem; white-space: pre-wrap; word-break: break-word }
+.step .ans { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--rule) }
+.chk { color: var(--ok); font-weight: 600 }
+
+/* variants */
+.variants { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px }
+.variant { border: 1px solid var(--rule); padding: 14px 16px; background: var(--paper); min-width: 0 }
+.variant h3 { margin-top: 0; font-size: 1.05rem }
+.variant.counter { border-color: var(--counter) }
+.variant.counter h3 { color: var(--counter) }
+.variant pre { background: transparent; border: 0; padding: 8px 0 0; font-size: .8rem; white-space: pre-wrap }
+
+/* ladder */
+.ladder { display: grid; grid-template-columns: 64px 1fr; row-gap: 0 }
+.ladder > div { padding: 10px 0; border-bottom: 1px solid var(--rule) }
+.ladder .lv { font-family: var(--display); font-size: 1.4rem; color: var(--mute); font-weight: 300 }
+.ladder .y1 .lv { color: var(--accent) }
+.ladder .later { color: var(--ink-2) }
+
+/* timeline */
+.timeline { display: grid; grid-template-columns: 170px 1fr; gap: 0 18px }
+.timeline > div { padding: 8px 0; border-bottom: 1px solid var(--rule) }
+.timeline .when { font-family: var(--mono); font-size: .85rem; color: var(--ink-2) }
+.timeline .now { color: var(--accent); font-weight: 600 }
+
+/* copy row */
+.addr { display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--paper); border: 1px solid var(--rule); padding: 8px 12px; font-family: var(--mono); font-size: .85rem }
+button { font: inherit; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; background: var(--accent); color: var(--accent-ink); border: 0; padding: 6px 12px; cursor: pointer }
+button:focus-visible { outline: 2px solid var(--counter); outline-offset: 2px }
+.cta { display: inline-block; background: var(--accent); color: var(--accent-ink); text-decoration: none; padding: 10px 18px; font-weight: 600; margin-right: 10px }
+.cta.secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent) }
+footer { margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--rule); font-size: .85rem; color: var(--ink-2) }
+
+@media (max-width: 760px) {
+  header { grid-template-columns: 1fr; gap: 24px; padding-top: 36px }
+  .steps, .variants { grid-template-columns: 1fr }
+  .timeline { grid-template-columns: 110px 1fr }
+  h2 { font-size: 1.55rem; margin-top: 48px }
+}
+@media (prefers-reduced-motion: no-preference) { button { transition: filter .15s } button:hover { filter: brightness(1.1) } }
+</style>
+
+<div class="wrap">
+<header>
+  <div>
+    <p class="eyebrow">A shared task of the ELOQUENT lab · CLEF 2027</p>
+    <h1><em>Fragments</em><br>Can a language model learn a language from its specification alone?</h1>
+    <p class="lede" style="margin-top:18px">Each year we publish a new fragment of a language in Montague's sense: a grammar, invented words, rules that map sentences to logic, and a few small models. Systems parse it, interpret it and reason in it. Every answer is checked by a parser, a model checker or a theorem prover. No fragment has ever been seen in training.</p>
+    <p><span class="badge">parse</span><span class="badge">interpret</span><span class="badge">infer</span><span class="badge">automatic scoring</span></p>
+  </div>
+  <div class="spec" aria-label="The practice fragment, seed 0">
+    <span class="r"><span class="k">lexicon.txt</span></span>
+    <span class="r">PN: wonbis, mislup    N: petfat, zukka, zispam</span>
+    <span class="r">IV: mippos, wutbu     TV: dorom, gigup</span>
+    <span class="r">Det: gesdam, zusdit, tamwup</span>
+    <span class="r"> </span>
+    <span class="r"><span class="k">grammar.txt</span></span>
+    <span class="r">S  -> NP VP</span>
+    <span class="r">NP -> Det N | PN | Det N RC</span>
+    <span class="r">RC -> that VP | that NP TV</span>
+    <span class="r">VP -> IV | TV NP | not VP</span>
+    <span class="r"> </span>
+    <span class="r"><span class="k">semantics.txt</span></span>
+    <span class="r">[S NP VP]   = NP(VP)</span>
+    <span class="r">[VP TV NP]  = \x. NP(\y. TV(x,y))</span>
+    <span class="r"><span class="f">gesdam</span> = \P.\Q. forall x (P(x) -> Q(x))</span>
+    <span class="r"><span class="f">zusdit</span> = \P.\Q. exists x (P(x) &amp; Q(x))</span>
+    <span class="r"><span class="f">tamwup</span> = \P.\Q. ~exists x (P(x) &amp; Q(x))</span>
+    <span class="r"> </span>
+    <span class="r"><span class="k">models.json</span></span>
+    <span class="r">M1: D={a,b}  petfat={a,b}  zukka={b}  mippos={a}</span>
+    <span class="r">    dorom={(a,b)}  wonbis=b  mislup=a  ...</span>
+  </div>
+</header>
+
+<h2>Why</h2>
+<p>A model in practical use is often handed rules it has never seen: a style guide, a domain ontology, an in-house format. We want to know whether it follows such a specification or falls back on what it already knows. Most benchmarks cannot tell these apart, because the grammar, the words or the logic were in the training data. COGS and SLOG train the grammar in; MTOB gives a model an informal grammar book; RuleTaker and ProofWriter state rules over a language the model already speaks. If the language is familiar, a right answer does not show the rules were used.</p>
+<p>Fragments removes the confound by construction. The grammar is new, the words are invented, and in one variant a familiar-looking word is given a contradicting meaning, so a system that trusts appearances goes visibly wrong.</p>
+
+<h2>A worked item</h2>
+<p>The same sentence from the practice fragment, as it appears in each of the three item types. Answers are one JSON object per line.</p>
+<div class="steps">
+  <div class="step">
+    <p class="eyebrow">parse</p>
+    <pre>gesdam zispam gigup wonbis</pre>
+    <div class="ans"><p class="eyebrow">answer</p>
+    <pre>{"grammatical": true,
+ "tree": "[S [NP [Det gesdam] [N zispam]]
+          [VP [TV gigup] [NP [PN wonbis]]]]"}</pre>
+    <p class="chk" style="margin:8px 0 0">checked by the parser</p></div>
+  </div>
+  <div class="step">
+    <p class="eyebrow">interpret</p>
+    <pre>gesdam zispam gigup wonbis</pre>
+    <div class="ans"><p class="eyebrow">answer</p>
+    <pre>{"lfs": ["! [X] : (zispam(X) =>
+            gigup(X,wonbis))"],
+ "truth": [{"M1": false, "M2": false}]}</pre>
+    <p class="chk" style="margin:8px 0 0">checked on M1, M2 and on models we withhold</p></div>
+  </div>
+  <div class="step">
+    <p class="eyebrow">infer</p>
+    <pre>premises: gesdam zispam gigup wonbis
+          zusdit zispam mippos
+conclusion: zusdit zispam gigup wonbis</pre>
+    <div class="ans"><p class="eyebrow">answer</p>
+    <pre>{"label": "entailment",
+ "lfs": {...},
+ "certificate": {"proof": "..."}}</pre>
+    <p class="chk" style="margin:8px 0 0">label and certificate checked by Prover9</p></div>
+  </div>
+</div>
+<p style="margin-top:14px">Any logical form equivalent to the gold counts; nothing is string-matched. For a neutral inference the certificate is two models of the premises in which the conclusion differs. For ambiguous sentences the gold is a set of readings.</p>
+
+<h2>Four variants of every item</h2>
+<p>Every item has twins with the same abstract tree. Consistency across them is what the task measures.</p>
+<div class="variants">
+  <div class="variant"><h3>nonce</h3><p>Invented words, the default. Rules out lexical memorisation.</p><pre>gesdam zispam gigup wonbis</pre></div>
+  <div class="variant"><h3>english</h3><p>The same trees with English words. Shows how much comes from familiar-language priors.</p><pre>every cat likes Tam</pre></div>
+  <div class="variant"><h3>scrambled</h3><p>The same rules in an unnatural word order. Is the grammar read or assumed?</p><pre>wonbis gigup zispam gesdam</pre></div>
+  <div class="variant counter"><h3>counter-English</h3><p>Nonce words, but the determiners meaning <em>every</em> and <em>no</em> have swapped meanings. A system that trusts how words look fails here; the drop from nonce to counter is the headline number per system.</p><pre>gesdam = \P.\Q. ~exists x (P(x) &amp; Q(x))</pre></div>
+</div>
+
+<h2>What is hard, in order</h2>
+<p>Items are tagged by phenomenon level and scores are reported per level. FraCaS sections give the template.</p>
+<div class="ladder">
+  <div class="y1 lv">1</div><div class="y1">Quantification: <em>every</em>, <em>some</em>, <em>no</em> <span class="badge">2027</span></div>
+  <div class="y1 lv">2</div><div class="y1">Negation and monotonicity <span class="badge">2027</span></div>
+  <div class="y1 lv">3</div><div class="y1">Relative clauses and scope ambiguity, where the gold is a set of readings <span class="badge">2027</span></div>
+  <div class="lv later">4</div><div class="later">Pronouns and donkey sentences, with a dynamic semantics</div>
+  <div class="lv later">5</div><div class="later">Plurals and comparatives</div>
+  <div class="lv later">6</div><div class="later">Intensional contexts, with worlds in the models</div>
+</div>
+
+<h2>How to take part</h2>
+<p>Give the four specification files and the item file to your system; return one JSON line per item. That is the whole interface. We ship a prompting baseline that does exactly this, so a submission can be as small as one model run.</p>
+<div class="tablewrap"><table>
+  <tr><th>Track</th><th>What it means</th></tr>
+  <tr><td>model alone</td><td>the model's outputs from the specification in its context</td></tr>
+  <tr><td>model with tools</td><td>the model with a prover, or with code it writes itself</td></tr>
+</table></div>
+<p style="margin-top:14px">Each submission declares its system type (prompted model, prover loop, program synthesis, neuro-symbolic, fine-tuned) and comes with a short experiment report. Results are reported by type rather than on one leaderboard. This is not a competition: several submissions per team and negative results are welcome. In an optional builder/breaker round, modelled on Voight-Kampff, you may submit new items with gold; items that pass our checker are run against all other systems.</p>
+
+<h2>Scoring</h2>
+<div class="tablewrap"><table>
+  <tr><th>Item</th><th>Checked by</th><th>Metric</th></tr>
+  <tr><td>parse</td><td>the organisers' parser</td><td>grammaticality accuracy; derivation match</td></tr>
+  <tr><td>interpret</td><td>model checker on released and withheld models; Prover9 as a bonus</td><td>truth-value agreement on every model; set equality of readings for ambiguous items</td></tr>
+  <tr><td>infer</td><td>Prover9 and Mace4 on the submitted formulas</td><td>label accuracy and certificate validity, reported separately</td></tr>
+</table></div>
+<p style="margin-top:14px">Gold is never annotated; it is computed from the specification, and the generator and its seed are published after each cycle. The specification itself, scored as a system, gets 100% by construction and appears in every table as the ceiling, next to a human baseline from a linguistics seminar.</p>
+
+<h2>Timeline</h2>
+<div class="timeline">
+  <div class="when">January 2027</div><div>Practice fragment with full gold, scoring scripts and baseline released</div>
+  <div class="when">April 2027</div><div>Test fragment released; two-week submission window; break submissions</div>
+  <div class="when">May 2027</div><div>Scores returned; experiment reports due</div>
+  <div class="when">14–17 Sept 2027</div><div>CLEF 2027, Bucharest: results and the builder/breaker round</div>
+</div>
+
+<h2>Code and data</h2>
+<p>The generator, scorer, baseline and the practice fragment are in the task repository. The real test fragment will be a fresh seed released only in the test window.</p>
+<p><a class="cta" href="https://github.com/StergiosCha/ELOQUENT">Repository</a><a class="cta secondary" href="https://eloquent-lab.github.io/">ELOQUENT lab</a></p>
+
+<h2>Organisers</h2>
+<p>Stergios Chatzikyriakidis, Institute for Language and Speech Processing, Athena Research Centre<br>Aarne Talman, University of Helsinki</p>
+<p>Contact the ELOQUENT organisers:</p>
+<div class="addr"><span id="mail">eloquent-clef2027-organizers@googlegroups.com</span><button id="copy" type="button">Copy</button></div>
+
+<footer>Fragments is the synthetic half of the No Data Task; its companion asks the same question of a real language with no digital resources, scored by a language expert. Part of the ELOQUENT lab for evaluation of generative language model quality.</footer>
+</div>
+
+<script>
+document.getElementById('copy').addEventListener('click', function () {
+  var t = document.getElementById('mail').textContent, b = this;
+  var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1500); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, function () { select(); });
+  else select();
+  function select() { var r = document.createRange(); r.selectNodeContents(document.getElementById('mail')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+});
+</script>
