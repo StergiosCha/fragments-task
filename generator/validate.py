@@ -84,6 +84,36 @@ def check_formula(text, signature, what):
     return f
 
 
+def certificate_problem(ans, item, variant):
+    """Why an infer answer's formulas or certificate are malformed, or None if they are well formed."""
+    try:
+        lfs = ans.get("lfs")
+        if not isinstance(lfs, dict) or not isinstance(lfs.get("premises"), list) or "conclusion" not in lfs:
+            return '"lfs" must be {"premises": [...], "conclusion": "..."}'
+        if len(lfs["premises"]) != len(item["premises"]):
+            return f'"lfs.premises" has {len(lfs["premises"])} formula(s); the item has {len(item["premises"])} premise(s)'
+        for k, p in enumerate(lfs["premises"]):
+            check_formula(p, variant.signature, f"lfs.premises[{k}]")
+        check_formula(lfs["conclusion"], variant.signature, "lfs.conclusion")
+        cert = ans.get("certificate")
+        if not isinstance(cert, dict):
+            return '"certificate" must be {"proof": "..."} or {"models": [m1, m2]}'
+        if ans["label"] == "neutral":
+            ms = cert.get("models")
+            if not isinstance(ms, list) or len(ms) != 2:
+                return 'a neutral certificate is {"models": [m1, m2]}: two models of the premises'
+            for k, m in enumerate(ms):
+                try:
+                    L.model_from_json(m, variant.signature)
+                except L.ModelError as e:
+                    return f"certificate.models[{k}]: {e}"
+        elif not isinstance(cert.get("proof"), str) or not cert["proof"].strip():
+            return f'an {ans["label"]} certificate is {{"proof": "..."}} with a non-empty proof'
+    except ValueError as e:
+        return str(e)
+    return None
+
+
 def check_answer(ans, item, variant):
     """Raise ValueError (with a participant-readable message) if the answer cannot be scored.
     Returns a list of warnings (problems that do not affect the score)."""
@@ -113,28 +143,11 @@ def check_answer(ans, item, variant):
     elif kind == "infer":
         if ans.get("label") not in LABELS:
             raise ValueError(f'"label" must be one of {", ".join(LABELS)}')
-        lfs = ans.get("lfs")
-        if not isinstance(lfs, dict) or not isinstance(lfs.get("premises"), list) or "conclusion" not in lfs:
-            raise ValueError('infer answers need "lfs": {"premises": [...], "conclusion": "..."}')
-        if len(lfs["premises"]) != len(item["premises"]):
-            raise ValueError(f'"lfs.premises" has {len(lfs["premises"])} formula(s); the item has {len(item["premises"])} premise(s)')
-        for k, p in enumerate(lfs["premises"]):
-            check_formula(p, variant.signature, f"lfs.premises[{k}]")
-        check_formula(lfs["conclusion"], variant.signature, "lfs.conclusion")
-        cert = ans.get("certificate")
-        if not isinstance(cert, dict):
-            raise ValueError('infer answers need "certificate": {"proof": "..."} or {"models": [m1, m2]}')
-        if ans["label"] == "neutral":
-            ms = cert.get("models")
-            if not isinstance(ms, list) or len(ms) != 2:
-                raise ValueError('a neutral certificate is {"models": [m1, m2]}: two models of the premises')
-            for k, m in enumerate(ms):
-                try:
-                    L.model_from_json(m, variant.signature)
-                except L.ModelError as e:
-                    raise ValueError(f"certificate.models[{k}]: {e}")
-        elif not isinstance(cert.get("proof"), str) or not cert["proof"].strip():
-            raise ValueError(f'an {ans["label"]} certificate is {{"proof": "..."}} with a non-empty proof')
+        # The label and the certificate are scored separately: a malformed certificate (or malformed formulas,
+        # which the certificate is checked against) makes the certificate invalid but leaves the label scorable.
+        problem = certificate_problem(ans, item, variant)
+        if problem:
+            warnings.append(f"certificate cannot be valid: {problem}")
     return warnings
 
 

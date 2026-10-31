@@ -34,7 +34,7 @@ import sys
 
 import logic as L
 import prover as P
-from validate import Variant, validate, validate_metadata
+from validate import Variant, certificate_problem, validate, validate_metadata
 
 VARIANTS = ["nonce", "english", "scrambled", "counter"]
 METRICS = ["parse/grammaticality", "parse/derivation", "interpret/truth-agreement", "interpret/reading-set",
@@ -84,6 +84,8 @@ def score_item(gold, ans, variant, equiv, use_ladr):
 
 def certificate_valid(ans, gold, variant, equiv, use_ladr):
     """True/False, or None when a proof cannot be checked because LADR is not installed."""
+    if certificate_problem(ans, variant.items[gold["id"]], variant):
+        return False
     prem = [L.parse_formula(p) for p in ans["lfs"]["premises"]]
     concl = L.parse_formula(ans["lfs"]["conclusion"])
     gprem = [L.parse_formula(p) for p in gold["lfs"]["premises"]]

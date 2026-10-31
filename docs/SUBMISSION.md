@@ -86,4 +86,4 @@ Two formulas count as the same reading when they are equivalent. At present the 
   - for neutral, `{"models": [m1, m2]}`: two models of the premises, the conclusion true in one and false in the other (either order).
 
   A model is written as in `models.json`: `D` lists the elements, each proper name maps to one element, each one-place predicate to a list of elements and each two-place predicate to a list of pairs `[x, y]`. Every name and predicate of the lexicon must be given, and nothing else.
-- The label and the certificate are scored separately.
+- The label and the certificate are scored separately. Only a missing or unknown `label` makes an infer answer unscorable. Problems with `lfs` or `certificate` make the certificate invalid, and the validator says why, but the label is still scored.
