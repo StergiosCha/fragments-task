@@ -11,3 +11,4 @@ proposal/*.fls
 .pytest_cache/
 out/
 runs/
+sanity/
