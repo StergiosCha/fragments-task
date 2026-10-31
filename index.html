@@ -51,7 +51,7 @@ header h1 em { font-style: italic; font-weight: 600; color: var(--accent) }
 .spec .f { color: var(--accent); font-weight: 600 }
 .spec .r { display: block; white-space: pre }
 
-/* worked example */
+/* example: one sentence in each item type */
 .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 18px }
 .step { background: var(--paper); border: 1px solid var(--rule); padding: 16px 18px; min-width: 0 }
 .step .eyebrow { margin-bottom: 6px }
@@ -136,7 +136,7 @@ footer { margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--rule);
 <p>A model in practical use is often handed rules it has never seen: a style guide, a domain ontology, an in-house format. We want to know whether it follows such a specification or falls back on what it already knows. Most benchmarks cannot tell these apart, because the grammar, the words or the logic were in the training data. COGS and SLOG train the grammar in; MTOB gives a model an informal grammar book; RuleTaker and ProofWriter state rules over a language the model already speaks. If the language is familiar, a right answer does not show the rules were used.</p>
 <p>Fragments removes the confound by construction. The grammar is new, the words are invented, and in one variant a familiar-looking word is given a contradicting meaning, so a system that trusts appearances goes visibly wrong.</p>
 
-<h2>A worked item</h2>
+<h2>One sentence, three item types</h2>
 <p>The same sentence from the practice fragment, as it appears in each of the three item types. Answers are one JSON object per line.</p>
 <div class="steps">
   <div class="step">
