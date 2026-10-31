@@ -22,6 +22,9 @@ follows a specification it has been given or falls back on what it already knows
 | `fragments/practice_seed0/` | A small practice fragment with full gold answers, in all four variants |
 | `fragments/test_seed1/` | A full-size fragment, also with gold, to exercise the pipeline. The real test fragment will be a fresh seed released only in the test window |
 
+Participants: start with [docs/PARTICIPANTS.md](docs/PARTICIPANTS.md) (what you get, what you send, how it is scored).
+Organisers: [docs/SEEDS.md](docs/SEEDS.md) says what may be public; `make release-practice` rebuilds the practice package.
+
 ## The fragment package
 
 Participants receive four plain-text files. This is the whole specification; a linguist reads it in ten minutes.
@@ -88,7 +91,7 @@ make score FRAGMENT=fragments/practice_seed0 SUBMISSION=runs/my-model
 | Item | Checked by | Metric |
 |---|---|---|
 | parse | the organisers' parser | grammaticality accuracy; derivation match |
-| interpret | model checker on the released models and on models we withhold; Prover9 as a bonus | truth-value agreement on every model; set equality of readings for ambiguous sentences |
+| interpret | model checker on the released models and on models we withhold | truth-value agreement on every model; set equality of readings for ambiguous sentences |
 | infer | Prover9 and Mace4 on the submitted formulas | label accuracy and certificate validity, reported separately |
 
 Everything is reported per variant and per phenomenon level (this year: quantification; negation and
