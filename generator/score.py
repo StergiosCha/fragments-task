@@ -19,7 +19,28 @@ from prover import _prove, PROVER9
 TOK = re.compile(r"\s*(=>|[!?]|\[|\]|:|\(|\)|,|&|\||~|[A-Za-z_][A-Za-z0-9_]*)")
 
 
+def from_spec_notation(s):
+    """Accept the specification's own notation as well as TPTP: `forall x (...)`, `exists x (...)`, `->`,
+    lowercase bound variables. Bound variable names are uppercased so the TPTP parser reads them as variables."""
+    if "forall" not in s and "exists" not in s and "->" not in s:
+        return s
+    bound = set(re.findall(r"\b(?:forall|exists)\s+([a-z]\w*)", s))
+    s = s.replace("->", "=>")
+    s = re.sub(r"\bforall\s+([a-z]\w*)\s*", lambda m: f"! [V_{m.group(1)}] : ", s)
+    s = re.sub(r"\bexists\s+([a-z]\w*)\s*", lambda m: f"? [V_{m.group(1)}] : ", s)
+    for v in bound:
+        s = re.sub(rf"(?<![\w\[]){re.escape(v)}(?!\w)", f"V_{v}", s)
+    return s
+
+
+def norm_tree(t):
+    """Trees are compared up to whitespace only; structure and labels must match exactly."""
+    if not isinstance(t, str): return None
+    return re.sub(r"\s+", " ", t).replace(" ]", "]").replace("[ ", "[").strip()
+
+
 def parse_tptp(s):
+    s = from_spec_notation(s)
     toks = TOK.findall(s); pos = [0]
 
     def peek(): return toks[pos[0]] if pos[0] < len(toks) else None
@@ -97,7 +118,7 @@ def main():
         if g["type"] == "parse":
             mark("parse/grammaticality", L, s.get("grammatical") == g["grammatical"])
             if g["grammatical"]:
-                mark("parse/tree", L, s.get("tree") in g["trees"])
+                mark("parse/tree", L, norm_tree(s.get("tree")) in {norm_tree(t) for t in g["trees"]})
         elif g["type"] == "interpret":
             gvecs = {vec(parse_tptp(r), models) for r in g["readings"]}
             svecs = set()
