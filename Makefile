@@ -1,12 +1,13 @@
 # Common tasks. Run `make help` for the list.
 PYTHON ?= python3
 
-.PHONY: help ladr test generate check-gold validate score
+.PHONY: help ladr test generate check-gold validate score baseline
 
 SEED ?= 0
 FRAGMENT ?= fragments/practice_seed0
 SUBMISSION ?=
 JSON ?=
+RUN ?= runs/baseline
 OUT ?= out/seed$(SEED)
 ARGS ?=
 
@@ -18,6 +19,8 @@ help:
 	@echo "make check-gold OUT=out/seed7   check that fragment's gold independently"
 	@echo "make score FRAGMENT=fragments/practice_seed0 SUBMISSION=my_submission [JSON=results.json]"
 	@echo "            score a submission directory (format: docs/SUBMISSION.md)"
+	@echo "make baseline FRAGMENT=fragments/practice_seed0 RUN=runs/mymodel"
+	@echo "            run the prompting baseline (needs FRAGMENTS_BASE_URL and FRAGMENTS_MODEL)"
 
 ladr:
 	scripts/install_ladr.sh .ladr
@@ -34,3 +37,6 @@ check-gold:
 score:
 	cd generator && $(PYTHON) score.py --fragment $(abspath $(FRAGMENT)) --submission $(abspath $(SUBMISSION)) \
 		$(if $(JSON),--json $(abspath $(JSON)))
+
+baseline:
+	cd generator && $(PYTHON) baseline.py --fragment $(abspath $(FRAGMENT)) --out $(abspath $(RUN))
