@@ -72,13 +72,16 @@ cd generator && python3 validate.py --variant ../fragments/practice_seed0/nonce 
 The scorer prints, for every variant, each metric of the scoring table per phenomenon level, and the nonce → counter
 drop. `gold/gold_as_submission.jsonl` in each variant is the specification itself scored as a system; it must give 100%.
 
-Run the prompting baseline (specification in context, few-shot from the practice fragment). It needs an
-API key in the environment; `--dry-run` prints the prompt without calling anything:
+Run the prompting baseline: the four specification files in the context, one request per item, zero-shot, at
+temperature 0 and seed 0. It works with any OpenAI-compatible endpoint, hosted or local (vLLM, llama.cpp, Ollama, …),
+needs nothing beyond the Python standard library, logs every prompt and raw reply, and resumes if interrupted.
+`--dry-run` prints the prompt without calling anything:
 
 ```
-ANTHROPIC_API_KEY=... MODEL=claude-sonnet-5 python3 baseline.py --variant ../fragments/test_seed1/counter --practice ../fragments/practice_seed0/nonce --out submission.jsonl
+export FRAGMENTS_BASE_URL=http://localhost:8000/v1 FRAGMENTS_MODEL=my-model   # FRAGMENTS_API_KEY if needed
+make baseline FRAGMENT=fragments/practice_seed0 RUN=runs/my-model
+make score FRAGMENT=fragments/practice_seed0 SUBMISSION=runs/my-model
 ```
-
 
 ## Scoring in brief
 
