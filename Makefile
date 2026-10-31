@@ -1,7 +1,7 @@
 # Common tasks. Run `make help` for the list.
 PYTHON ?= python3
 
-.PHONY: help ladr test generate check-gold validate score baseline
+.PHONY: help ladr test generate check-gold validate score baseline sanity
 
 SEED ?= 0
 FRAGMENT ?= fragments/practice_seed0
@@ -21,6 +21,7 @@ help:
 	@echo "            score a submission directory (format: docs/SUBMISSION.md)"
 	@echo "make baseline FRAGMENT=fragments/practice_seed0 RUN=runs/mymodel"
 	@echo "            run the prompting baseline (needs FRAGMENTS_BASE_URL and FRAGMENTS_MODEL)"
+	@echo "make sanity FRAGMENT=fragments/practice_seed0   score the reference systems (spec, random, majority, wrong)"
 
 ladr:
 	scripts/install_ladr.sh .ladr
@@ -40,3 +41,7 @@ score:
 
 baseline:
 	cd generator && $(PYTHON) baseline.py --fragment $(abspath $(FRAGMENT)) --out $(abspath $(RUN))
+
+sanity:
+	cd generator && $(PYTHON) sanity.py --fragment $(abspath $(FRAGMENT)) --out $(abspath sanity) \
+		--markdown $(abspath $(FRAGMENT))/SANITY.md
