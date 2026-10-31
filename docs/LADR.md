@@ -22,7 +22,7 @@ Package managers: Homebrew's `prover9` formula is also 2009-11A. Ubuntu 24.04 no
 - **Renaming.** Before anything goes to LADR, constants are written `c_<name>`, predicates `p_<name>` and bound variables `x1, x2, …`. Prover9 treats any free name beginning with *u*–*z* as a variable. Without the renaming, the proper name `wonbis` in `wutbu(wonbis)` would be read as "everything" (this bug produced wrong gold in the first practice release).
 - **Deterministic limits.**
   - Prover9 stops after `max_given = 2000` given clauses.
-  - Mace4 searches domains of size 1 to 4.
+  - Mace4 searches domains of size 2 to 4. (Mace4's minimum is 2; since the formulas have no equality, any model can be enlarged by duplicating an element, so nothing is lost.)
   - There is no time limit in the search itself. A 120-second wall-clock limit exists only as a safety net, and hitting it is an error, not a result.
 - **Explicit outcomes.**
   - `prove()` returns `proved`, `not_proved` (the search space is exhausted) or `unknown` (the limit was reached).
