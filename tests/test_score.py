@@ -205,7 +205,7 @@ def test_neutral_certificate_with_an_incomplete_model_is_an_error_not_a_crash(fr
     row = neutral_answer(frag)
     row["certificate"]["models"][0] = {"D": ["a"]}
     ok, rep = cert_ok(frag, row)
-    assert ok is False and "does not interpret" in rep.errors[0][1]
+    assert ok is False and any("does not interpret" in w[1] for w in rep.warnings)
 
 
 def test_certificate_needs_the_gold_formulas(frag):
@@ -219,7 +219,7 @@ def test_certificate_with_too_few_premises_is_an_error(frag):
         if row.get("label") and len(row["lfs"]["premises"]) == 2:
             row["lfs"]["premises"] = row["lfs"]["premises"][:1]
             ok, rep = cert_ok(frag, row)
-            assert ok is False and "the item has 2 premise(s)" in rep.errors[0][1]
+            assert ok is False and any("the item has 2 premise(s)" in w[1] for w in rep.warnings)
             return
     pytest.skip("no two-premise item")
 
@@ -253,12 +253,25 @@ def item_of_type(frag, kind):
     ("interpret", {"lfs": ["mippos(tam)"]}, "not a proper name"),
     ("interpret", {"lfs": ["mippos(wonbis,wonbis)"]}, "takes 1 argument"),
     ("infer", {"label": "yes"}, '"label" must be one of'),
-    ("infer", {"label": "neutral", "lfs": ["a"]}, '"lfs": {"premises"'),
 ])
 def test_answer_level_errors(frag, kind, answer, message):
     item = item_of_type(frag, kind)
     rep = validate([json.dumps({"id": item["id"], **answer})], Variant(frag / "nonce"))
     assert rep.errors and message in rep.errors[0][1], rep.errors
+
+
+def test_a_malformed_certificate_leaves_the_label_scorable(frag):
+    """Label and certificate are reported separately: a bad certificate does not void a right label."""
+    row = neutral_answer(frag)
+    row["certificate"] = {"proof": "not a pair of models"}
+    results, rep = S.score_variant(Variant(frag / "nonce"), [json.dumps(row)], use_ladr=False)
+    (r,) = [x for x in results if x["id"] == row["id"]]
+    assert r["infer/label"] is True and r["infer/certificate"] is False
+    assert not rep.errors and any("certificate cannot be valid" in w[1] for w in rep.warnings)
+    row["lfs"] = ["a"]
+    results, rep = S.score_variant(Variant(frag / "nonce"), [json.dumps(row)], use_ladr=False)
+    (r,) = [x for x in results if x["id"] == row["id"]]
+    assert r["infer/label"] is True and r["infer/certificate"] is False
 
 
 def test_duplicate_answers_keep_the_first(frag):
