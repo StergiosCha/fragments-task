@@ -101,7 +101,9 @@ track runs in year one.
 
 ## People
 
-Organised by the No Data Task team of the ELOQUENT lab; full organiser list to follow.
+No Data Task team: Maria Barrett, Stergios Chatzikyriakidis, Jussi Karlgren, Bruno Nadalic Sotic, Aarne Talman.
+
+ELOQUENT 2027 lab organisers: Maria Barrett, Sarah Bouaraba, Stergios Chatzikyriakidis, Diandra Fabre, Federica Gamba, Lorraine Goeuriot, Rohit Raj Gunti, Jindřich Helcl, Jussi Karlgren, Jindřich Libovický, Josiane Mothe, Philippe Mulhem, Bruno Nadalic Sotic, Lucie Poláková, Yves Scherrer, Didier Schwab, Pavel Šindelář, Aarne Talman, Markarit Vartampetian, Erik Velldal, Eline Visser, Lilja Øvrelid.
 The inference pipeline grew out of NESTOR, a project of the computational-semantics seminar in Athens.
 
 MIT licence.
