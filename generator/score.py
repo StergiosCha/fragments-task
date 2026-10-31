@@ -13,7 +13,7 @@ All reported per level.
 """
 import argparse, json, os, re, collections
 import fragment as F
-from prover import _prove, PROVER9
+import prover as P
 
 # minimal TPTP parser (the subset gen.py emits) so submitted formulas can be model-checked
 TOK = re.compile(r"\s*(=>|[!?]|\[|\]|:|\(|\)|,|&|\||~|[A-Za-z_][A-Za-z0-9_]*)")
@@ -158,9 +158,9 @@ def check_cert(s, g, models):
         m_true, m_false = [load_models_inline(m) for m in ms]
         return (all(F.holds(p, m_true) for p in prem) and F.holds(concl, m_true)
                 and all(F.holds(p, m_false) for p in prem) and not F.holds(concl, m_false))
-    if "proof" in cert and PROVER9:
-        goal = F.tptp(concl) if s.get("label") == "entailment" else "~(" + F.tptp(concl) + ")"
-        return _prove([F.tptp(p) for p in prem], goal) is not None
+    if "proof" in cert and P.ladr_available():
+        goal = concl if s.get("label") == "entailment" else ("not", concl)
+        return P.prove(prem, goal).status == P.PROVED
     return s.get("label") == g["label"] and "enumeration_bound" in cert  # no-prover fallback
 
 
