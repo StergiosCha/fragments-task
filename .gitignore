@@ -10,3 +10,4 @@ proposal/*.fls
 .ladr/
 .pytest_cache/
 out/
+runs/
