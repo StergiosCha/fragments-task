@@ -1,5 +1,10 @@
-<title>Fragments</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fragments — learning a language from its specification</title>
+<meta name="description" content="A shared task of the ELOQUENT lab at CLEF 2027: can a language model learn a language from its specification alone?">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&display=swap">
 <style>
 /* Layout: a typeset specification, the way a Montague fragment is printed — one measure, numbered rules, the formal objects set in mono and the prose around them in a serif with real italics. */
@@ -91,6 +96,8 @@ footer { margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--rule);
 }
 @media (prefers-reduced-motion: no-preference) { button { transition: filter .15s } button:hover { filter: brightness(1.1) } }
 </style>
+</head>
+<body>
 
 <div class="wrap">
 <header>
@@ -231,3 +238,5 @@ document.getElementById('copy').addEventListener('click', function () {
   function select() { var r = document.createRange(); r.selectNodeContents(document.getElementById('mail')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
 });
 </script>
+</body>
+</html>
