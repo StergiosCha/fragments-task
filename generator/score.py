@@ -1,176 +1,237 @@
 #!/usr/bin/env python3
-"""Score a submission against the gold of one variant.
+"""Score a submission (docs/SUBMISSION.md) against the gold of a fragment.
 
-  python3 score.py --variant out/seed1/nonce --submission out/seed1/nonce/gold/gold_as_submission.jsonl
+  # a whole submission: a directory with nonce.jsonl, english.jsonl, scrambled.jsonl, counter.jsonl
+  # (any subset) and optionally submission.json (track and system type)
+  python3 score.py --fragment ../fragments/practice_seed0 --submission my_submission/ [--json results.json]
 
-Metrics (scoring_criteria.md, Part A):
-  parse      grammaticality accuracy; tree match (submitted tree is one of the gold derivations)
-  interpret  truth-vector agreement on released+hidden models for every submitted reading, set equality
-             of readings modulo truth-vector equivalence, reading recall
-  infer      label accuracy; certificate validity (proof re-checked with Prover9, or the two models
-             re-checked with the model checker)
-All reported per level.
+  # one variant
+  python3 score.py --variant ../fragments/practice_seed0/nonce --submission my_nonce.jsonl
+
+Metrics, as in the task page's scoring table; each is the share of items scored as correct:
+  parse/grammaticality       the grammaticality judgement is right
+  parse/derivation           the tree is one of the gold derivations (grammatical items only)
+  interpret/truth-agreement  every submitted formula agrees with a gold reading on every model, released and withheld
+  interpret/reading-set      the submitted readings and the gold readings are the same set (modulo equivalence)
+  interpret/reading-recall   every gold reading is among the submitted ones
+  infer/label                the label is right
+  infer/certificate          the certificate is valid (reported separately from the label): the formulas agree with
+                             the gold ones, and the proof is re-derived by Prover9 from them, or the two models
+                             are models of the premises in which the conclusion differs
+Every metric is reported per variant and per phenomenon level (1, 2, 3, all), and the nonce -> counter drop
+(counter minus nonce, in points) is reported for each metric.
+
+"Equivalent" means: the same truth value in every released and withheld model of the variant
+(ModelEquivalence below). This is the current method; the audit (AUDIT.md §3.2) shows it accepts some
+non-equivalent formulas, and a stronger check is an open question for the organisers.
 """
-import argparse, json, os, re, collections
-import fragment as F
+import argparse
+import collections
+import json
+import os
+import re
+import sys
+
+import logic as L
 import prover as P
+from validate import Variant, certificate_problem, validate, validate_metadata
 
-# minimal TPTP parser (the subset gen.py emits) so submitted formulas can be model-checked
-TOK = re.compile(r"\s*(=>|[!?]|\[|\]|:|\(|\)|,|&|\||~|[A-Za-z_][A-Za-z0-9_]*)")
+VARIANTS = ["nonce", "english", "scrambled", "counter"]
+METRICS = ["parse/grammaticality", "parse/derivation", "interpret/truth-agreement", "interpret/reading-set",
+           "interpret/reading-recall", "infer/label", "infer/certificate"]
+LEVELS = ["1", "2", "3", "all"]
 
 
-def from_spec_notation(s):
-    """Accept the specification's own notation as well as TPTP: `forall x (...)`, `exists x (...)`, `->`,
-    lowercase bound variables. Bound variable names are uppercased so the TPTP parser reads them as variables."""
-    if "forall" not in s and "exists" not in s and "->" not in s:
-        return s
-    bound = set(re.findall(r"\b(?:forall|exists)\s+([a-z]\w*)", s))
-    s = s.replace("->", "=>")
-    s = re.sub(r"\bforall\s+([a-z]\w*)\s*", lambda m: f"! [V_{m.group(1)}] : ", s)
-    s = re.sub(r"\bexists\s+([a-z]\w*)\s*", lambda m: f"? [V_{m.group(1)}] : ", s)
-    for v in bound:
-        s = re.sub(rf"(?<![\w\[]){re.escape(v)}(?!\w)", f"V_{v}", s)
-    return s
+class ModelEquivalence:
+    """Formulas are equivalent when they have the same truth value in every one of the given models."""
+
+    def __init__(self, models):
+        self.models = [models[k] for k in sorted(models)]
+
+    def key(self, formula):
+        return tuple(L.holds(formula, m) for m in self.models)
+
+    def same(self, f, g):
+        return self.key(f) == self.key(g)
 
 
 def norm_tree(t):
     """Trees are compared up to whitespace only; structure and labels must match exactly."""
-    if not isinstance(t, str): return None
-    return re.sub(r"\s+", " ", t).replace(" ]", "]").replace("[ ", "[").strip()
+    return re.sub(r"\s+", " ", t).replace(" ]", "]").replace("[ ", "[").strip() if isinstance(t, str) else None
 
 
-def parse_tptp(s):
-    s = from_spec_notation(s)
-    toks = TOK.findall(s); pos = [0]
+# ---------------------------------------------------------------- one item
 
-    def peek(): return toks[pos[0]] if pos[0] < len(toks) else None
-    def take(t=None):
-        x = toks[pos[0]]; pos[0] += 1
-        if t and x != t: raise ValueError(f"expected {t} got {x}")
-        return x
-
-    def binop():
-        left = unary()
-        while peek() in ("&", "|", "=>"):
-            op = take(); right = unary()
-            left = ({"&": "and", "|": "or", "=>": "imp"}[op], left, right)
-        return left
-
-    def unary():
-        t = peek()
-        if t == "~": take(); return ("not", unary())
-        if t in ("!", "?"):
-            q = take(); take("["); v = take(); take("]"); take(":")
-            return ("forall" if q == "!" else "exists", v, unary())
-        if t == "(": take(); e = binop(); take(")"); return e
-        name = take()
-        if peek() == "(":
-            take(); args = [atom()]
-            while peek() == ",": take(); args.append(atom())
-            take(")"); return ("pred", name, tuple(args))
-        return ("var", name) if name[0].isupper() else ("const", name)
-
-    def atom():
-        n = take()
-        return ("var", n) if n[0].isupper() else ("const", n)
-
-    e = binop()
-    if pos[0] != len(toks): raise ValueError("trailing tokens")
-    return e
+def score_item(gold, ans, variant, equiv, use_ladr):
+    """{metric: True/False/None} for one item; None means 'not applicable' or 'could not be checked'."""
+    kind = gold["type"]
+    if kind == "parse":
+        grammatical = ans is not None and ans["grammatical"] == gold["grammatical"]
+        out = {"parse/grammaticality": grammatical}
+        if gold["grammatical"]:
+            out["parse/derivation"] = (ans is not None and ans["grammatical"] is True
+                                       and norm_tree(ans["tree"]) in {norm_tree(t) for t in gold["trees"]})
+        return out
+    if kind == "interpret":
+        gkeys = {equiv.key(L.parse_formula(r)) for r in gold["readings"]}
+        skeys = {equiv.key(L.parse_formula(lf)) for lf in ans["lfs"]} if ans else set()
+        return {"interpret/truth-agreement": bool(skeys) and skeys <= gkeys,
+                "interpret/reading-set": skeys == gkeys,
+                "interpret/reading-recall": gkeys <= skeys}
+    return {"infer/label": ans is not None and ans["label"] == gold["label"],
+            "infer/certificate": False if ans is None else certificate_valid(ans, gold, variant, equiv, use_ladr)}
 
 
-def load_models(path, prefix):
-    raw = json.load(open(path))
+def certificate_valid(ans, gold, variant, equiv, use_ladr):
+    """True/False, or None when a proof cannot be checked because LADR is not installed."""
+    if certificate_problem(ans, variant.items[gold["id"]], variant):
+        return False
+    prem = [L.parse_formula(p) for p in ans["lfs"]["premises"]]
+    concl = L.parse_formula(ans["lfs"]["conclusion"])
+    gprem = [L.parse_formula(p) for p in gold["lfs"]["premises"]]
+    gconcl = L.parse_formula(gold["lfs"]["conclusion"])
+    if len(prem) != len(gprem) or not all(equiv.same(p, q) for p, q in zip(prem, gprem)) \
+            or not equiv.same(concl, gconcl):
+        return False
+    cert = ans["certificate"]
+    if ans["label"] == "neutral":
+        m1, m2 = (L.model_from_json(m, variant.signature) for m in cert["models"])
+        if not all(L.holds(p, m) for p in prem for m in (m1, m2)):
+            return False
+        return L.holds(concl, m1) != L.holds(concl, m2)       # either order: the conclusion differs
+    if not use_ladr:
+        return None
+    goal = concl if ans["label"] == "entailment" else ("not", concl)
+    return P.prove(prem, goal).status == P.PROVED
+
+
+# ---------------------------------------------------------------- one variant, one submission
+
+def score_variant(variant, lines, use_ladr):
+    """(per-item results, validation report) for one variant's submission lines."""
+    rep = validate(lines, variant)
+    equiv = ModelEquivalence({**variant.released, **variant.hidden})
+    results = []
+    for i, g in sorted(variant.gold.items()):
+        r = score_item(g, rep.answers.get(i), variant, equiv, use_ladr)
+        results.append({"id": i, "type": g["type"], "level": g["level"], **r})
+    return results, rep
+
+
+def tally(results):
+    """metric -> level -> {"correct", "n", "unchecked"}."""
+    t = {m: {l: {"correct": 0, "n": 0, "unchecked": 0} for l in LEVELS} for m in METRICS}
+    for r in results:
+        for m in METRICS:
+            if m not in r:
+                continue
+            for l in (str(r["level"]), "all"):
+                cell = t[m][l]
+                if r[m] is None:
+                    cell["unchecked"] += 1
+                else:
+                    cell["n"] += 1
+                    cell["correct"] += r[m]
+    for m in METRICS:
+        for cell in t[m].values():
+            cell["score"] = round(100 * cell["correct"] / cell["n"], 2) if cell["n"] else None
+    return t
+
+
+def drops(tables):
+    """For each metric and level: counter score minus nonce score, in points (None if either is missing)."""
+    if "nonce" not in tables or "counter" not in tables:
+        return {}
     out = {}
-    for name, m in raw.items():
-        D = m["D"]; consts, preds = {}, {}
-        for k, v in m.items():
-            if k == "D": continue
-            if isinstance(v, str): consts[k] = v
-            else: preds[k] = [tuple(e) if isinstance(e, list) else e for e in v]
-        out[name] = {"D": D, "consts": consts, "preds": preds}
+    for m in METRICS:
+        out[m] = {}
+        for l in LEVELS:
+            a, b = tables["nonce"][m][l]["score"], tables["counter"][m][l]["score"]
+            out[m][l] = None if a is None or b is None else round(b - a, 2)
     return out
 
 
-def vec(term, models):
-    try: return tuple(F.holds(term, m) for m in models.values())
-    except Exception: return None
+# ---------------------------------------------------------------- printing
 
+def fmt(x, signed=False):
+    if x is None:
+        return "       -"
+    return f"{x:+7.1f} " if signed else f"{x:7.1f}%"
+
+
+def print_table(title, table, signed=False):
+    print(f"\n{title}")
+    print(f"  {'metric':28s}" + "".join(f"{('level ' + l) if l != 'all' else 'all':>9s}" for l in LEVELS))
+    for m in METRICS:
+        cells = table[m]
+        row = [cells[l] if signed else cells[l]["score"] for l in LEVELS]
+        print(f"  {m:28s}" + "".join(f" {fmt(x, signed)}" for x in row))
+    if not signed:
+        unchecked = table["infer/certificate"]["all"]["unchecked"]
+        if unchecked:
+            print(f"  ({unchecked} proof certificate(s) not checked: Prover9 is not installed; "
+                  "they are left out of infer/certificate)")
+
+
+# ---------------------------------------------------------------- command line
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--variant", required=True)
-    ap.add_argument("--submission", required=True)
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--fragment", help="fragment directory containing nonce/, english/, scrambled/, counter/")
+    ap.add_argument("--variant", help="score one variant directory instead of a whole fragment")
+    ap.add_argument("--submission", required=True,
+                    help="submission directory (with <variant>.jsonl files), or one .jsonl file with --variant")
+    ap.add_argument("--json", help="also write the results as JSON to this file")
+    ap.add_argument("--details", help="also write per-item results (JSON lines) to this file")
+    ap.add_argument("--without-ladr", action="store_true",
+                    help="score without Prover9: proof certificates are reported as unchecked")
     a = ap.parse_args()
-    gold = {g["id"]: g for g in map(json.loads, open(os.path.join(a.variant, "gold/gold.jsonl")))}
-    sub = {s["id"]: s for s in map(json.loads, open(a.submission))}
-    models = {**load_models(os.path.join(a.variant, "models.json"), "M"),
-              **load_models(os.path.join(a.variant, "gold/models_hidden.json"), "H")}
-    lex = {}  # predicate names are taken from the gold; nothing lexical is needed for checking
-    tally = collections.defaultdict(lambda: collections.defaultdict(lambda: [0, 0]))  # [metric][level] -> [hit, n]
+    use_ladr = P.ladr_available()
+    if not use_ladr and not a.without_ladr:
+        sys.exit("Prover9 not found (see docs/LADR.md); official scores need it. "
+                 "Use --without-ladr to score everything except proof certificates.")
+    if bool(a.fragment) == bool(a.variant):
+        sys.exit("give either --fragment (with a submission directory) or --variant (with a submission file)")
 
-    def mark(metric, lvl, ok):
-        t = tally[metric][lvl]; t[0] += bool(ok); t[1] += 1
-        t = tally[metric]["all"]; t[0] += bool(ok); t[1] += 1
+    if a.variant:
+        jobs = {os.path.basename(os.path.normpath(a.variant)): (a.variant, a.submission)}
+        meta, meta_problems = {}, []
+    else:
+        if not os.path.isdir(a.submission):
+            sys.exit("with --fragment, --submission must be a directory containing <variant>.jsonl files")
+        jobs = {v: (os.path.join(a.fragment, v), os.path.join(a.submission, f"{v}.jsonl"))
+                for v in VARIANTS if os.path.exists(os.path.join(a.submission, f"{v}.jsonl"))}
+        if not jobs:
+            sys.exit(f"no {', '.join(v + '.jsonl' for v in VARIANTS)} found in {a.submission}")
+        meta, meta_problems = validate_metadata(os.path.join(a.submission, "submission.json"))
 
-    for gid, g in gold.items():
-        s = sub.get(gid, {}); L = g["level"]
-        if g["type"] == "parse":
-            mark("parse/grammaticality", L, s.get("grammatical") == g["grammatical"])
-            if g["grammatical"]:
-                mark("parse/tree", L, norm_tree(s.get("tree")) in {norm_tree(t) for t in g["trees"]})
-        elif g["type"] == "interpret":
-            gvecs = {vec(parse_tptp(r), models) for r in g["readings"]}
-            svecs = set()
-            for lf in s.get("lfs", []):
-                try: svecs.add(vec(parse_tptp(lf), models))
-                except Exception: svecs.add(None)
-            mark("interpret/truth-agreement", L, bool(svecs) and svecs <= gvecs)
-            mark("interpret/reading-set", L, svecs == gvecs)
-            mark("interpret/reading-recall", L, len(gvecs & svecs) == len(gvecs))
-        else:
-            mark("infer/label", L, s.get("label") == g["label"])
-            mark("infer/certificate", L, check_cert(s, g, models))
-    print(f"{'metric':30s} " + " ".join(f"{l:>8}" for l in ["1", "2", "3", "all"]))
-    for metric in sorted(tally):
-        row = []
-        for l in [1, 2, 3, "all"]:
-            h, n = tally[metric].get(l, [0, 0])
-            row.append(f"{100*h/n:7.1f}%" if n else "      -")
-        print(f"{metric:30s} " + " ".join(row))
+    tables, validation, details = {}, {}, []
+    for v, (vdir, sub) in jobs.items():
+        with open(sub) as f:
+            results, rep = score_variant(Variant(vdir), f.read().splitlines(), use_ladr)
+        tables[v] = tally(results)
+        validation[v] = {"errors": [m for m in rep.lines() if m.startswith("error")],
+                         "warnings": [m for m in rep.lines() if m.startswith("warning")]}
+        details += [{"variant": v, **r} for r in results]
 
+    for p in meta_problems:
+        print(f"submission.json: {p}")
+    for v, val in validation.items():
+        for line in val["errors"] + val["warnings"]:
+            print(f"{v}: {line}")
+    for v, t in tables.items():
+        print_table(f"variant {v}", t)
+    d = drops(tables)
+    if d:
+        print_table("nonce -> counter drop (counter minus nonce, points)", d, signed=True)
 
-def check_cert(s, g, models):
-    """A certificate is valid if (a) the submitted lfs agree in truth value with the gold lfs on all models, and
-    (b) for entailment/contradiction a proof re-checks (or, without Prover9, the label matches), for neutral the
-    two submitted models are models of the premises in which the conclusion differs."""
-    try:
-        lfs = s["lfs"]; prem = [parse_tptp(p) for p in lfs["premises"]]; concl = parse_tptp(lfs["conclusion"])
-        gprem = [parse_tptp(p) for p in g["lfs"]["premises"]]; gconcl = parse_tptp(g["lfs"]["conclusion"])
-    except Exception:
-        return False
-    if any(vec(p, models) != vec(q, models) for p, q in zip(prem, gprem)) or vec(concl, models) != vec(gconcl, models):
-        return False
-    cert = s.get("certificate", {})
-    if s.get("label") == "neutral":
-        ms = cert.get("models")
-        if not ms or len(ms) != 2: return False
-        m_true, m_false = [load_models_inline(m) for m in ms]
-        return (all(F.holds(p, m_true) for p in prem) and F.holds(concl, m_true)
-                and all(F.holds(p, m_false) for p in prem) and not F.holds(concl, m_false))
-    if "proof" in cert and P.ladr_available():
-        goal = concl if s.get("label") == "entailment" else ("not", concl)
-        return P.prove(prem, goal).status == P.PROVED
-    return s.get("label") == g["label"] and "enumeration_bound" in cert  # no-prover fallback
-
-
-def load_models_inline(m):
-    D = m["D"]; consts, preds = {}, {}
-    for k, v in m.items():
-        if k == "D": continue
-        if isinstance(v, str): consts[k] = v
-        else: preds[k] = [tuple(e) if isinstance(e, list) else e for e in v]
-    return {"D": D, "consts": consts, "preds": preds}
+    if a.json:
+        with open(a.json, "w") as f:
+            json.dump({"submission": meta, "scores": tables, "drop_nonce_to_counter": d,
+                       "validation": validation, "ladr": use_ladr}, f, indent=1)
+    if a.details:
+        with open(a.details, "w") as f:
+            f.writelines(json.dumps(r) + "\n" for r in details)
 
 
 if __name__ == "__main__":
