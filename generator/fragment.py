@@ -82,12 +82,41 @@ ENGLISH = {"PN": ["Tam", "Ren"], "N": ["farmer", "donkey", "cat"], "IV": ["walks
            "TV": ["sees", "likes"], "Det": ["every", "some", "no"]}
 
 
-def english_lexicon(lex):
-    """Same categories and meanings, English surface words (the English-word twin)."""
+def english_word_map(lex):
+    """nonce word -> English word, by position within each category (the English-word twin)."""
     out, idx = {}, {c: 0 for c in CATS}
     for w, (c, m) in lex.items():
-        e = ENGLISH[c][idx[c]]; idx[c] += 1
-        out[e] = (c, m)
+        out[w] = ENGLISH[c][idx[c]]; idx[c] += 1
+    return out
+
+
+def english_lexicon(lex):
+    """Same categories and meanings, English surface words."""
+    wm = english_word_map(lex)
+    return {wm[w]: cm for w, cm in lex.items()}
+
+
+def rename_words(tree, word_map):
+    """The same tree with every lexical word replaced through word_map (function words unchanged)."""
+    if isinstance(tree, str):
+        return tree
+    if len(tree) == 2:
+        return (tree[0], word_map[tree[1]])
+    sym, ri, kids = tree
+    return (sym, ri, tuple(rename_words(k, word_map) for k in kids))
+
+
+def words_of(tree, order="svo"):
+    """Surface string of a (canonical) tree under a word order."""
+    if isinstance(tree, str):
+        return [tree]
+    if len(tree) == 2:
+        return [tree[1]]
+    sym, ri, kids = tree
+    rhs, perm = surface_rules(order)[sym][ri]
+    out = []
+    for pos in range(len(rhs)):
+        out += words_of(kids[perm[pos]], order)
     return out
 
 
@@ -259,11 +288,19 @@ def generate(rng, lex, order="svo", depth=0):
     return gen("S", depth)
 
 
+def _has_rule(tree, sym, ri):
+    if isinstance(tree, str) or len(tree) == 2:
+        return False
+    return (tree[0], tree[1]) == (sym, ri) or any(_has_rule(k, sym, ri) for k in tree[2])
+
+
 def level(tree):
-    """Phenomenon level of a tree: 3 if any RC or scope ambiguity, 2 if 'not', else 1."""
-    s = tree_str(tree)
-    if "[RC" in s: return 3
-    if "not" in s: return 2
+    """Phenomenon level of a tree, read off its rules: 3 if it contains a relative clause, 2 if it contains
+    VP -> not VP, else 1. (Scope ambiguity also gives level 3; that is decided from the readings.)"""
+    if _has_rule(tree, "NP", 2):
+        return 3
+    if _has_rule(tree, "VP", 2):
+        return 2
     return 1
 
 

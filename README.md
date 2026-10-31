@@ -53,9 +53,12 @@ development only (it produces neutral inference items only). `make test` runs th
 Generate a fragment:
 
 ```
-cd generator
-python3 gen.py --seed 7 --out ../fragments/my_seed7
+make generate SEED=7 OUT=out/seed7       # or: cd generator && python3 gen.py --seed 7 --out ../out/seed7
+make check-gold OUT=out/seed7            # independent re-check of every gold answer
 ```
+
+Each item is built once as an abstract tree and written out in all four variants with the same id, so item *n*
+of `nonce`, `english`, `scrambled` and `counter` are twins; the variants also share the released and withheld models.
 
 Score a submission against one variant (the `gold_as_submission.jsonl` file is the specification itself
 scored as a system; it must give 100% on every line):
