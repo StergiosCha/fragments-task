@@ -46,9 +46,9 @@ system that trusts how the words look will visibly go wrong). Consistency across
 
 ## Running the code
 
-Requirements: Python 3.10+ and Prover9/Mace4 (`brew install prover9` on macOS; on Linux, build from
-https://www.cs.unm.edu/~mccune/prover9/). Without the provers, inference items are still labelled by
-model sampling, but no proof certificates are produced.
+Requirements: Python 3.10+ and Prover9/Mace4, version LADR 2009-11A: `make ladr` builds it into `./.ladr`
+(see [docs/LADR.md](docs/LADR.md)). The generator refuses to compute gold without it; `--without-ladr` is for
+development only (it produces neutral inference items only). `make test` runs the tests.
 
 Generate a fragment:
 
@@ -71,7 +71,6 @@ API key in the environment; `--dry-run` prints the prompt without calling anythi
 ANTHROPIC_API_KEY=... MODEL=claude-sonnet-5 python3 baseline.py --variant ../fragments/test_seed1/counter --practice ../fragments/practice_seed0/nonce --out submission.jsonl
 ```
 
-`generator/README.md` describes the implementation, the self-check output and the known limits.
 
 ## Scoring in brief
 

@@ -7,9 +7,9 @@ Writes, per variant (nonce, english, scrambled, counter):
   <out>/<variant>/{lexicon.txt,grammar.txt,semantics.txt,models.json,items.jsonl}
   <out>/<variant>/gold/{gold.jsonl,models_hidden.json,gold_as_submission.jsonl}
 """
-import argparse, json, os, random
+import argparse, json, os, random, sys
 import fragment as F
-from prover import label_terms
+import prover as P
 
 VARIANTS = ["nonce", "english", "scrambled", "counter"]
 
@@ -64,7 +64,7 @@ def words_of(tree, order):
     return out
 
 
-def build_variant(seed, variant, n_parse, n_interp, n_infer, n_models=2, n_hidden=3):
+def build_variant(seed, variant, n_parse, n_interp, n_infer, n_models=2, n_hidden=3, use_ladr=True):
     rng = random.Random(f"{seed}-{variant}")
     base = F.make_lexicon(random.Random(seed))  # same nonce words across variants
     order = "scrambled" if variant == "scrambled" else "svo"
@@ -122,8 +122,13 @@ def build_variant(seed, variant, n_parse, n_interp, n_infer, n_models=2, n_hidde
         concl = related(rng, prem_t, lex, order) if rng.random() < 0.8 else F.generate(rng, lex, order)
         pt = [F.readings(t, lex)[0] for t, _ in prems]
         ct = F.readings(concl[0], lex)[0]
-        lab, cert = label_terms(pt, ct, F.tptp, lex, seed=rng.randrange(10**6))
-        if lab is None or counts[lab] >= cap: continue
+        sub_rng = random.Random(rng.randrange(10**6))
+        if use_ladr:
+            lab, cert = P.label_terms(pt, ct, lex)
+        else:
+            lab, cert = P.label_terms_by_sampling(pt, ct, lex, sub_rng)
+        # "inconsistent" (premises jointly unsatisfiable) has no defined label; such items are skipped
+        if lab not in counts or counts[lab] >= cap: continue
         counts[lab] += 1
         emit("infer", {"premises": [" ".join(w) for _, w in prems], "conclusion": " ".join(concl[1])},
              {"label": lab, "lfs": {"premises": [F.tptp(t) for t in pt], "conclusion": F.tptp(ct)}, "certificate": cert,
@@ -146,7 +151,7 @@ def build_variant(seed, variant, n_parse, n_interp, n_infer, n_models=2, n_hidde
         f"{d}/models.json": F.models_json(released),
         f"{d}/items.jsonl": "".join(json.dumps(x) + "\n" for x in items),
         f"{d}/gold/gold.jsonl": "".join(json.dumps(x) + "\n" for x in gold),
-        f"{d}/gold/models_hidden.json": F.models_json(hidden).replace('"M', '"H'),
+        f"{d}/gold/models_hidden.json": F.models_json(hidden, prefix="H"),
         f"{d}/gold/gold_as_submission.jsonl": "".join(json.dumps(x) + "\n" for x in sub),
     }, counts
 
@@ -158,10 +163,15 @@ def main():
     ap.add_argument("--n-parse", type=int, default=40)
     ap.add_argument("--n-interp", type=int, default=40)
     ap.add_argument("--n-infer", type=int, default=30)
+    ap.add_argument("--without-ladr", action="store_true",
+                    help="development only: no Prover9/Mace4; infer items are neutral-only and found by sampling")
     a = ap.parse_args()
+    if not a.without_ladr and not P.ladr_available():
+        sys.exit("Prover9/Mace4 not found (see docs/LADR.md). Gold must be computed with the pinned LADR; "
+                 "use --without-ladr only for development.")
     out = a.out or f"out/seed{a.seed}"
     for v in VARIANTS:
-        files, counts = build_variant(a.seed, v, a.n_parse, a.n_interp, a.n_infer)
+        files, counts = build_variant(a.seed, v, a.n_parse, a.n_interp, a.n_infer, use_ladr=not a.without_ladr)
         for p, s in files.items(): write(os.path.join(out, p), s)
         print(f"{v:10s} parse+interpret+infer written; infer labels {counts}")
     print("wrote", out)

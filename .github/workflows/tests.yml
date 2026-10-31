@@ -1,0 +1,30 @@
+name: tests
+
+on:
+  push:
+    branches-ignore: [gh-pages]
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Cache LADR build
+        id: ladr-cache
+        uses: actions/cache@v4
+        with:
+          path: .ladr
+          key: ladr-${{ hashFiles('scripts/install_ladr.sh') }}
+      - name: Build LADR 2009-11A
+        if: steps.ladr-cache.outputs.cache-hit != 'true'
+        run: scripts/install_ladr.sh .ladr
+      - name: Install Python dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Run tests (with LADR)
+        run: |
+          export PATH="$PWD/.ladr/bin:$PATH"
+          FRAGMENTS_REQUIRE_LADR=1 python -m pytest -v -rs

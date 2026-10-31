@@ -7,3 +7,5 @@ proposal/*.log
 proposal/*.out
 proposal/*.fdb_latexmk
 proposal/*.fls
+.ladr/
+.pytest_cache/
