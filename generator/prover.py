@@ -25,7 +25,7 @@ import logic as L
 
 LADR_VERSION = "2009-11A"          # the final LADR release; see docs/LADR.md
 PROVER9_MAX_GIVEN = 2000            # deterministic search limit for Prover9
-MACE4_END_SIZE = 4                  # Mace4 searches domains of size 1..MACE4_END_SIZE
+MACE4_END_SIZE = 4                  # Mace4 searches domains of size 2..MACE4_END_SIZE (see find_model)
 WALL_CLOCK_SAFETY = 120             # seconds; only a safety net, see LadrTimeout
 
 PROVED, NOT_PROVED, UNKNOWN = "proved", "not_proved", "unknown"
@@ -171,7 +171,10 @@ def parse_mace4_model(out, signature):
 def find_model(formulas, signature, end_size=MACE4_END_SIZE):
     """A model of all `formulas` with at most `end_size` elements, or None if there is none that small.
     The model is re-checked with logic.holds; a disagreement raises LadrError."""
-    opts = ["assign(start_size, 1).", f"assign(end_size, {end_size})."]
+    # Mace4 starts at size 2 at the smallest. Nothing is lost: the formulas have no equality, so a model can be
+    # enlarged by duplicating an element without changing any truth value, and a 1-element model implies a
+    # 2-element one.
+    opts = ["assign(start_size, 2).", f"assign(end_size, {end_size})."]
     out = _run("Mace4", mace4_path(), _input(formulas, (), opts))
     model = parse_mace4_model(out, signature)
     if model is None:
