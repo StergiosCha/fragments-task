@@ -34,9 +34,9 @@ One JSON line per item.
 - **parse** — is the string in the fragment, and what is its derivation?
   `{"id": 17, "grammatical": true, "tree": "[S [NP [Det kro] [N blicket]] [VP [TV fepps] [NP [Det sib] [N wug]]]]"}`
 - **interpret** — the logical form in TPTP first-order syntax, and its truth value in each given model. Any formula equivalent to the gold counts.
-  `{"id": 42, "lf": "! [X] : (blicket(X) => ? [Y] : (wug(Y) & fepps(X,Y)))", "truth": {"M1": true, "M2": false}}`
+  `{"id": 42, "lfs": ["! [X] : (blicket(X) => ? [Y] : (wug(Y) & fepps(X,Y)))"], "truth": [{"M1": true, "M2": false}]}`  (one formula and one truth object per reading)
 - **infer** — entailment, contradiction or neutral, with a certificate: the logical forms of all sentences plus a proof, or for neutral items two models of the premises in which the conclusion differs.
-  `{"id": 88, "label": "entailment", "lfs": {...}, "certificate": {...}}`
+  `{"id": 88, "label": "entailment", "lfs": {"premises": [...], "conclusion": "..."}, "certificate": {"proof": "..."}}`  (full format: docs/SUBMISSION.md in the task repository)
 
 Every item also appears as a natural-language twin in several languages, with scrambled word order, and as a **counter-English** twin in which a familiar-looking word is given a contradicting meaning. Consistency across these is what we measure.
 

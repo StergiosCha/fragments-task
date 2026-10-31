@@ -22,6 +22,9 @@ follows a specification it has been given or falls back on what it already knows
 | `fragments/practice_seed0/` | A small practice fragment with full gold answers, in all four variants |
 | `fragments/test_seed1/` | A full-size fragment, also with gold, to exercise the pipeline. The real test fragment will be a fresh seed released only in the test window |
 
+Participants: start with [docs/PARTICIPANTS.md](docs/PARTICIPANTS.md) (what you get, what you send, how it is scored).
+Organisers: [docs/SEEDS.md](docs/SEEDS.md) says what may be public; `make release-practice` rebuilds the practice package.
+
 ## The fragment package
 
 Participants receive four plain-text files. This is the whole specification; a linguist reads it in ten minutes.
