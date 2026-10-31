@@ -101,7 +101,7 @@ track runs in year one.
 
 ## People
 
-Stergios Chatzikyriakidis (Institute for Language and Speech Processing, Athena Research Centre) and Aarne Talman (University of Helsinki).
+Organised by the No Data Task team of the ELOQUENT lab; full organiser list to follow.
 The inference pipeline grew out of NESTOR, a project of the computational-semantics seminar in Athens.
 
 MIT licence.
