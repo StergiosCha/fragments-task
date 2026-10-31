@@ -91,7 +91,7 @@ make score FRAGMENT=fragments/practice_seed0 SUBMISSION=runs/my-model
 | Item | Checked by | Metric |
 |---|---|---|
 | parse | the organisers' parser | grammaticality accuracy; derivation match |
-| interpret | model checker on the released models and on models we withhold; Prover9 as a bonus | truth-value agreement on every model; set equality of readings for ambiguous sentences |
+| interpret | model checker on the released models and on models we withhold | truth-value agreement on every model; set equality of readings for ambiguous sentences |
 | infer | Prover9 and Mace4 on the submitted formulas | label accuracy and certificate validity, reported separately |
 
 Everything is reported per variant and per phenomenon level (this year: quantification; negation and
