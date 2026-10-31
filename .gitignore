@@ -9,3 +9,4 @@ proposal/*.fdb_latexmk
 proposal/*.fls
 .ladr/
 .pytest_cache/
+out/
