@@ -9,3 +9,10 @@ proposal/*.fdb_latexmk
 proposal/*.fls
 .ladr/
 .pytest_cache/
+out/
+runs/
+sanity/
+# only practice fragments are committed (docs/SEEDS.md)
+fragments/*
+!fragments/practice_*/
+!fragments/test_seed1/

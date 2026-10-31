@@ -28,3 +28,12 @@ jobs:
         run: |
           export PATH="$PWD/.ladr/bin:$PATH"
           FRAGMENTS_REQUIRE_LADR=1 python -m pytest -v -rs
+      - name: Build the practice fragment with LADR (artifact for review; not committed)
+        run: |
+          export PATH="$PWD/.ladr/bin:$PATH"
+          scripts/release_practice.sh "$RUNNER_TEMP/practice_seed0"
+          cat "$RUNNER_TEMP/practice_seed0/SANITY.md"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: practice_seed0-regenerated
+          path: ${{ runner.temp }}/practice_seed0

@@ -22,6 +22,9 @@ follows a specification it has been given or falls back on what it already knows
 | `fragments/practice_seed0/` | A small practice fragment with full gold answers, in all four variants |
 | `fragments/test_seed1/` | A full-size fragment, also with gold, to exercise the pipeline. The real test fragment will be a fresh seed released only in the test window |
 
+Participants: start with [docs/PARTICIPANTS.md](docs/PARTICIPANTS.md) (what you get, what you send, how it is scored).
+Organisers: [docs/SEEDS.md](docs/SEEDS.md) says what may be public; `make release-practice` rebuilds the practice package.
+
 ## The fragment package
 
 Participants receive four plain-text files. This is the whole specification; a linguist reads it in ten minutes.
@@ -53,31 +56,42 @@ development only (it produces neutral inference items only). `make test` runs th
 Generate a fragment:
 
 ```
-cd generator
-python3 gen.py --seed 7 --out ../fragments/my_seed7
+make generate SEED=7 OUT=out/seed7       # or: cd generator && python3 gen.py --seed 7 --out ../out/seed7
+make check-gold OUT=out/seed7            # independent re-check of every gold answer
 ```
 
-Score a submission against one variant (the `gold_as_submission.jsonl` file is the specification itself
-scored as a system; it must give 100% on every line):
+Each item is built once as an abstract tree and written out in all four variants with the same id, so item *n*
+of `nonce`, `english`, `scrambled` and `counter` are twins; the variants also share the released and withheld models.
+
+Score a submission. A submission is a directory with one JSON-lines file per variant and a `submission.json`
+declaring track and system type; the format, with examples, is in [docs/SUBMISSION.md](docs/SUBMISSION.md).
+`validate.py` checks a file first and explains every problem by line number:
 
 ```
-python3 score.py --variant ../fragments/test_seed1/nonce --submission ../fragments/test_seed1/nonce/gold/gold_as_submission.jsonl
+make score FRAGMENT=fragments/practice_seed0 SUBMISSION=my_submission JSON=results.json
+cd generator && python3 validate.py --variant ../fragments/practice_seed0/nonce --submission ../my_submission/nonce.jsonl
 ```
 
-Run the prompting baseline (specification in context, few-shot from the practice fragment). It needs an
-API key in the environment; `--dry-run` prints the prompt without calling anything:
+The scorer prints, for every variant, each metric of the scoring table per phenomenon level, and the nonce → counter
+drop. `gold/gold_as_submission.jsonl` in each variant is the specification itself scored as a system; it must give 100%.
+
+Run the prompting baseline: the four specification files in the context, one request per item, zero-shot, at
+temperature 0 and seed 0. It works with any OpenAI-compatible endpoint, hosted or local (vLLM, llama.cpp, Ollama, …),
+needs nothing beyond the Python standard library, logs every prompt and raw reply, and resumes if interrupted.
+`--dry-run` prints the prompt without calling anything:
 
 ```
-ANTHROPIC_API_KEY=... MODEL=claude-sonnet-5 python3 baseline.py --variant ../fragments/test_seed1/counter --practice ../fragments/practice_seed0/nonce --out submission.jsonl
+export FRAGMENTS_BASE_URL=http://localhost:8000/v1 FRAGMENTS_MODEL=my-model   # FRAGMENTS_API_KEY if needed
+make baseline FRAGMENT=fragments/practice_seed0 RUN=runs/my-model
+make score FRAGMENT=fragments/practice_seed0 SUBMISSION=runs/my-model
 ```
-
 
 ## Scoring in brief
 
 | Item | Checked by | Metric |
 |---|---|---|
 | parse | the organisers' parser | grammaticality accuracy; derivation match |
-| interpret | model checker on the released models and on models we withhold; Prover9 as a bonus | truth-value agreement on every model; set equality of readings for ambiguous sentences |
+| interpret | model checker on the released models and on models we withhold | truth-value agreement on every model; set equality of readings for ambiguous sentences |
 | infer | Prover9 and Mace4 on the submitted formulas | label accuracy and certificate validity, reported separately |
 
 Everything is reported per variant and per phenomenon level (this year: quantification; negation and

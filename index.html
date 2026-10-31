@@ -51,7 +51,7 @@ header h1 em { font-style: italic; font-weight: 600; color: var(--accent) }
 .spec .f { color: var(--accent); font-weight: 600 }
 .spec .r { display: block; white-space: pre }
 
-/* worked example */
+/* example: one sentence in each item type */
 .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 18px }
 .step { background: var(--paper); border: 1px solid var(--rule); padding: 16px 18px; min-width: 0 }
 .step .eyebrow { margin-bottom: 6px }
@@ -136,7 +136,7 @@ footer { margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--rule);
 <p>A model in practical use is often handed rules it has never seen: a style guide, a domain ontology, an in-house format. We want to know whether it follows such a specification or falls back on what it already knows. Most benchmarks cannot tell these apart, because the grammar, the words or the logic were in the training data. COGS and SLOG train the grammar in; MTOB gives a model an informal grammar book; RuleTaker and ProofWriter state rules over a language the model already speaks. If the language is familiar, a right answer does not show the rules were used.</p>
 <p>Fragments removes the confound by construction. The grammar is new, the words are invented, and in one variant a familiar-looking word is given a contradicting meaning, so a system that trusts appearances goes visibly wrong.</p>
 
-<h2>A worked item</h2>
+<h2>One sentence, three item types</h2>
 <p>The same sentence from the practice fragment, as it appears in each of the three item types. Answers are one JSON object per line.</p>
 <div class="steps">
   <div class="step">
@@ -166,7 +166,7 @@ conclusion: zusdit zispam gigup wonbis</pre>
     <pre>{"label": "entailment",
  "lfs": {...},
  "certificate": {"proof": "..."}}</pre>
-    <p class="chk" style="margin:8px 0 0">label and certificate checked by Prover9</p></div>
+    <p class="chk" style="margin:8px 0 0">formulas checked; label re-derived from them by Prover9</p></div>
   </div>
 </div>
 <p style="margin-top:14px">Any logical form equivalent to the gold counts; nothing is string-matched. For a neutral inference the certificate is two models of the premises in which the conclusion differs. For ambiguous sentences the gold is a set of readings.</p>
@@ -192,7 +192,7 @@ conclusion: zusdit zispam gigup wonbis</pre>
 </div>
 
 <h2>How to take part</h2>
-<p>Give the four specification files and the item file to your system; return one JSON line per item. That is the whole interface. We ship a prompting baseline that does exactly this, so a submission can be as small as one model run.</p>
+<p>Give the four specification files and the item file of each variant to your system, and return one JSON line per item: one answer file per variant, plus a short <code>submission.json</code> that declares your track and system type. That is the whole interface. We ship a prompting baseline that does exactly this, so a submission can be as small as one model run, and a validator that checks your files before you send them and explains every problem by line number. Details: the <a href="https://github.com/StergiosCha/fragments-task/blob/main/docs/PARTICIPANTS.md">participant guide</a> and the <a href="https://github.com/StergiosCha/fragments-task/blob/main/docs/SUBMISSION.md">submission format</a>.</p>
 <div class="tablewrap"><table>
   <tr><th>Track</th><th>What it means</th></tr>
   <tr><td>model alone</td><td>the model's outputs from the specification in its context</td></tr>
@@ -204,10 +204,10 @@ conclusion: zusdit zispam gigup wonbis</pre>
 <div class="tablewrap"><table>
   <tr><th>Item</th><th>Checked by</th><th>Metric</th></tr>
   <tr><td>parse</td><td>the organisers' parser</td><td>grammaticality accuracy; derivation match</td></tr>
-  <tr><td>interpret</td><td>model checker on released and withheld models; Prover9 as a bonus</td><td>truth-value agreement on every model; set equality of readings for ambiguous items</td></tr>
+  <tr><td>interpret</td><td>model checker on released and withheld models</td><td>truth-value agreement on every model; set equality of readings for ambiguous items</td></tr>
   <tr><td>infer</td><td>Prover9 and Mace4 on the submitted formulas</td><td>label accuracy and certificate validity, reported separately</td></tr>
 </table></div>
-<p style="margin-top:14px">Gold is never annotated; it is computed from the specification, and the generator and its seed are published after each cycle. The specification itself, scored as a system, gets 100% by construction and appears in every table as the ceiling, next to a human baseline from a linguistics seminar.</p>
+<p style="margin-top:14px">Gold is never annotated; it is computed from the specification. The generator is public. The test fragment comes from a fresh, secret seed, which we publish when the test window closes, so anyone can regenerate and check the gold. The specification itself, scored as a system, gets 100% by construction and appears in every table as the ceiling, next to a human baseline from a linguistics seminar.</p>
 
 <h2>Timeline</h2>
 <div class="timeline">
@@ -218,7 +218,7 @@ conclusion: zusdit zispam gigup wonbis</pre>
 </div>
 
 <h2>Code and data</h2>
-<p>The generator, scorer, baseline and the practice fragment are in the task repository. The real test fragment will be a fresh seed released only in the test window.</p>
+<p>The generator, scorer, baseline and the practice fragment are in the task repository. The test fragment, from a fresh and secret seed, is released only in the test window.</p>
 <p><a class="cta" href="https://github.com/StergiosCha/fragments-task">Repository</a><a class="cta secondary" href="https://eloquent-lab.github.io/">ELOQUENT lab</a></p>
 
 <h2>Organisers</h2>
