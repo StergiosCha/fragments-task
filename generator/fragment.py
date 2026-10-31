@@ -14,6 +14,8 @@ Terms (nested tuples):
 """
 import itertools, json, random
 
+from logic import canon, holds, tptp, model_to_json  # re-exported: F.tptp, F.holds, F.canon
+
 CATS = ["PN", "N", "IV", "TV", "Det"]
 
 # --- grammar: fixed shape for year one; word order comes from the variant ---
@@ -216,37 +218,7 @@ def _interp_S(tree, lex):
     return uniq
 
 
-def canon(t, env=None, n=None):
-    """Rename bound variables in order of binding so alpha-equivalent terms print identically."""
-    env = env or {}; n = n or itertools.count(1)
-    k = t[0]
-    if k == "var": return ("var", env.get(t[1], t[1]))
-    if k in ("const",): return t
-    if k == "pred": return ("pred", t[1], tuple(canon(a, env, n) for a in t[2]))
-    if k == "not": return ("not", canon(t[1], env, n))
-    if k in ("and", "or", "imp"): return (k, canon(t[1], env, n), canon(t[2], env, n))
-    v = "V" + str(next(n))
-    return (k, v, canon(t[2], {**env, t[1]: v}, n))
-
-
-# --- printing: TPTP first-order syntax ---
-def tptp(t):
-    k = t[0]
-    if k == "var": return t[1]
-    if k == "const": return t[1]
-    if k == "pred": return f"{t[1]}({','.join(tptp(a) for a in t[2])})"
-    if k == "not": return f"~{par(t[1])}"
-    if k == "and": return f"({tptp(t[1])} & {tptp(t[2])})"
-    if k == "or": return f"({tptp(t[1])} | {tptp(t[2])})"
-    if k == "imp": return f"({tptp(t[1])} => {tptp(t[2])})"
-    if k == "forall": return f"! [{t[1]}] : {par(t[2])}"
-    if k == "exists": return f"? [{t[1]}] : {par(t[2])}"
-    raise ValueError(k)
-
-
-def par(t):
-    s = tptp(t)
-    return s if t[0] in ("pred", "not", "and", "or", "imp") and s.startswith("(") or t[0] == "pred" else f"({s})"
+# canon, tptp: see logic.py
 
 
 # --- models and evaluation ---
@@ -260,20 +232,7 @@ def random_model(rng, lex, size):
     return m
 
 
-def holds(t, m, env=None):
-    env = env or {}
-    k = t[0]
-    if k == "pred":
-        args = tuple(env[a[1]] if a[0] == "var" else m["consts"][a[1]] for a in t[2])
-        ext = m["preds"][t[1]]
-        return (args[0] if len(args) == 1 else list(args)) in [e if isinstance(e, str) else list(e) for e in ext]
-    if k == "not": return not holds(t[1], m, env)
-    if k == "and": return holds(t[1], m, env) and holds(t[2], m, env)
-    if k == "or": return holds(t[1], m, env) or holds(t[2], m, env)
-    if k == "imp": return (not holds(t[1], m, env)) or holds(t[2], m, env)
-    if k == "forall": return all(holds(t[2], m, {**env, t[1]: d}) for d in m["D"])
-    if k == "exists": return any(holds(t[2], m, {**env, t[1]: d}) for d in m["D"])
-    raise ValueError(k)
+# holds (the model checker): see logic.py
 
 
 # --- surface generation ---
@@ -325,5 +284,5 @@ def semantics_txt(lex):
     return SEMANTICS_TEXT + "\n" + dets + "\n" + words + "\n"
 
 
-def models_json(models):
-    return json.dumps({f"M{i+1}": {"D": m["D"], **m["consts"], **m["preds"]} for i, m in enumerate(models)}, indent=1)
+def models_json(models, prefix="M"):
+    return json.dumps({f"{prefix}{i+1}": model_to_json(m) for i, m in enumerate(models)}, indent=1)
